@@ -8,8 +8,6 @@ module.exports = configure(function (ctx) {
     boot: ['axios', 'loading', 'particles'],
     css: ['app.scss'],
     extras: [
-      // 'ionicons-v4',
-      // 'mdi-v5',
       'fontawesome-v6',
       // 'eva-icons',
       // 'themify',
@@ -20,7 +18,7 @@ module.exports = configure(function (ctx) {
     ],
 
     build: {
-      vueRouterMode: 'history', // available values: 'hash', 'history'
+      vueRouterMode: 'history',
       chainWebpack(chain) {
         chain
           .plugin('eslint-webpack-plugin')
@@ -33,14 +31,12 @@ module.exports = configure(function (ctx) {
         type: 'http'
       },
       port: 8081,
-      open: true // opens browser window automatically
+      open: true
     },
 
     framework: {
       config: {},
       // lang: 'en-US', // Quasar language pack
-
-      // Quasar plugins
       plugins: ['LoadingBar']
     },
 
@@ -59,15 +55,12 @@ module.exports = configure(function (ctx) {
           .use(ESLintPlugin, [{ extensions: ['js'] }]);
       },
 
-      middlewares: [
-        ctx.prod ? 'compression' : '',
-        'render' // keep this as last one
-      ]
+      middlewares: [ctx.prod ? 'compression' : '', 'render']
     },
 
     pwa: {
-      workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
-      workboxOptions: {}, // only for GenerateSW
+      workboxPluginMode: 'GenerateSW',
+      workboxOptions: {},
 
       chainWebpackCustomSW(chain) {
         chain
@@ -120,7 +113,7 @@ module.exports = configure(function (ctx) {
     },
 
     electron: {
-      bundler: 'packager', // 'packager' or 'builder'
+      bundler: 'packager',
 
       packager: {},
 

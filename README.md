@@ -14,6 +14,6 @@
 
 - java
 
-- Quasar Framework (Based on Vuejs)
+- Quasar Framework (Based on Vue.js)
 
 - Spring Boot Framework
