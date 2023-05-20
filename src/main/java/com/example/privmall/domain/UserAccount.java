@@ -49,34 +49,36 @@ public class UserAccount {
     @OneToMany(mappedBy = "userAccount")
     private final List<Article> articles = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "TOKEN_ID")
-    public Token token;
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "TOKEN_ID")
+//    public Token token;
+//
+//    public UserAccount addInfo(String password, Token token, RoleType... roleType) {
+//        this.password = password;
+//        this.token = token;
+//        if (roleType == null) {
+//            this.roles = this.roles + "";
+//        } else {
+//            for (RoleType type : roleType) {
+//                this.roles = this.roles + "," + type.toString();
+//            }
+//        }
+//        return this;
+//    }
 
-    public UserAccount addInfo(String password, Token token, RoleType... roleType) {
-        this.password = password;
-        this.token = token;
-        if (roleType == null) {
-            this.roles = this.roles + "";
-        } else {
-            for (RoleType type : roleType) {
-                this.roles = this.roles + "," + type.toString();
-            }
-        }
+    public UserAccount changePassword(String encodedPassword) {
+        this.password = encodedPassword;
         return this;
     }
 
-    public void changePassword(String encodedPassword) {
-        this.password = encodedPassword;
-    }
+//    public void addToken(Token token) {
+//        this.token = token;
+//        token.setUserAccount(this);
+//    }
 
-    public void addToken(Token token) {
-        this.token = token;
-        token.setUserAccount(this);
-    }
-
-    public void addAuthorities(RoleType role) {
+    public UserAccount addAuthorities(RoleType role) {
         this.roles = this.roles + "," + role.toString();
+        return this;
     }
 
     public List<String> getAuthorities() {
