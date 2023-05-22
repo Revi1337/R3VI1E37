@@ -1,5 +1,6 @@
 package com.example.privmall.config.security;
 
+import com.example.privmall.config.security.oauth2.PrincipalOauth2UserService;
 import com.example.privmall.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,8 @@ public class SecurityFilterChainConfig {
 
     private final CorsConfigurationSource corsConfigurationSource;
 
+    private final PrincipalOauth2UserService principalOauth2UserService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 //        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
@@ -36,6 +39,10 @@ public class SecurityFilterChainConfig {
                 .apply(new CustomConfig(jwtService, userAccountRepository)).and()
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/**").permitAll())
+                .oauth2Login(oauth -> oauth
+                        .loginPage("/")
+                        .userInfoEndpoint()
+                        .userService(principalOauth2UserService))
                 .build();
     }
 
