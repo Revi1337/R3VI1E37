@@ -20,4 +20,9 @@ public class OAuth2Controller {
         httpServletResponse.sendRedirect("/oauth2/authorization/github");
     }
 
+    @GetMapping(path = "/facebook")
+    public void forwardFacebook(HttpServletResponse httpServletResponse) throws IOException {
+        httpServletResponse.sendRedirect("/oauth2/authorization/facebook");
+    }
+
 }
