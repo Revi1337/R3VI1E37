@@ -19,6 +19,9 @@ module.exports = configure(function (ctx) {
 
     build: {
       vueRouterMode: 'history',
+      distDir: '../src/main/resources/static',
+      // htmlFilename:
+      //   '../SpringWithVue/RestSession/src/main/resources/static/index.html',
       chainWebpack(chain) {
         chain
           .plugin('eslint-webpack-plugin')
@@ -31,7 +34,14 @@ module.exports = configure(function (ctx) {
         type: 'http'
       },
       port: 8081,
-      open: true
+      open: true,
+      proxy: {
+        '/o2': 'http://localhost:8080',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/o2': ''
+        }
+      }
     },
 
     framework: {

@@ -75,7 +75,13 @@
           <q-separator dark inset />
 
           <div class="row">
-            <q-btn class="col" :ripple="false" outline color="green-12">
+            <q-btn
+              class="col"
+              :ripple="false"
+              outline
+              color="green-12"
+              href="/api/oauth2/google"
+            >
               <div class="row items-center" :style="{ minWidth: '200px' }">
                 <q-icon size="16px" name="fa-brands fa-google" class="col-1" />
                 <div class="col">sign in google</div>
@@ -84,7 +90,13 @@
           </div>
 
           <div class="row">
-            <q-btn class="col" :ripple="false" outline color="green-12">
+            <q-btn
+              class="col"
+              :ripple="false"
+              outline
+              color="green-12"
+              href="/api/oauth2/github"
+            >
               <div class="row items-center" :style="{ minWidth: '200px' }">
                 <q-icon size="16px" name="fa-brands fa-github" class="col-1" />
                 <div class="col">sign in github</div>
