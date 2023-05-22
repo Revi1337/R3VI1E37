@@ -20,8 +20,6 @@ module.exports = configure(function (ctx) {
     build: {
       vueRouterMode: 'history',
       distDir: '../src/main/resources/static',
-      // htmlFilename:
-      //   '../SpringWithVue/RestSession/src/main/resources/static/index.html',
       chainWebpack(chain) {
         chain
           .plugin('eslint-webpack-plugin')

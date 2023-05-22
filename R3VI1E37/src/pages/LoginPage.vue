@@ -123,6 +123,36 @@
             </q-btn>
           </div>
 
+          <div class="row">
+            <q-btn
+              class="col"
+              :ripple="false"
+              outline
+              color="green-12"
+              href="/api/oauth2/naver"
+            >
+              <div class="row items-center" :style="{ minWidth: '200px' }">
+                <q-icon size="16px" name="img:/naver.svg" class="col-1" />
+                <div class="col">sign in naver</div>
+              </div>
+            </q-btn>
+          </div>
+
+          <div class="row">
+            <q-btn
+              class="col"
+              :ripple="false"
+              outline
+              color="green-12"
+              href="/api/oauth2/kakao"
+            >
+              <div class="row items-center" :style="{ minWidth: '200px' }">
+                <q-icon size="16px" name="img:/kakaotalk.svg" class="col-1" />
+                <div class="col">sign in kakao</div>
+              </div>
+            </q-btn>
+          </div>
+
           <div class="row items-center justify-between">
             <span class="text-white">Don't have an account?</span>
             <q-btn

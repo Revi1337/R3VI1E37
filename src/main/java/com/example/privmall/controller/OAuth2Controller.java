@@ -25,4 +25,9 @@ public class OAuth2Controller {
         httpServletResponse.sendRedirect("/oauth2/authorization/facebook");
     }
 
+    @GetMapping(path = "/naver")
+    public void forwardNaver(HttpServletResponse httpServletResponse) throws IOException {
+        httpServletResponse.sendRedirect("/oauth2/authorization/naver");
+    }
+
 }
