@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export async function findAllPost() {
-  return axios.get('http://localhost:8080/api/posts');
+  return axios.get('/api/posts');
 }
 
 export async function createPost(jsonData, dummy) {
@@ -12,9 +12,9 @@ export async function createPost(jsonData, dummy) {
     'Content-Type': 'multipart/form-data; application/json',
     Authorization: 'test1@.com'
   };
-  return axios.post('http://localhost:8080/api/posts', formData, headers);
+  return axios.post('/api/posts', formData, headers);
 }
 
 export async function userLogin(jsonData) {
-  return axios.post('http://localhost:8080/api/auth/login', jsonData);
+  return axios.post('/api/auth/login', jsonData);
 }

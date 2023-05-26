@@ -70,7 +70,7 @@
               dense
               size="md"
               icon="fa-regular fa-pen-to-square"
-              to="/post"
+              :to="{ name: 'Post' }"
             />
           </div>
 
@@ -88,7 +88,7 @@
             round
             dense
             icon="fa-solid fa-right-to-bracket"
-            to="/login"
+            :to="{ name: 'Login' }"
           />
         </div>
       </div>

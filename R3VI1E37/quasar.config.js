@@ -34,11 +34,11 @@ module.exports = configure(function (ctx) {
       port: 8081,
       open: true,
       proxy: {
-        '/o2': 'http://localhost:8080',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/o2': ''
-        }
+        '/api': 'http://localhost:8080',
+        changeOrigin: true
+        // pathRewrite: {
+        //   '^/api': ''
+        // }
       }
     },
 
@@ -48,7 +48,7 @@ module.exports = configure(function (ctx) {
       plugins: ['LoadingBar']
     },
 
-    animations: [],
+    animations: 'all',
 
     ssr: {
       pwa: false,
