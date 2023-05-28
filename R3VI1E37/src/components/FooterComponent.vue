@@ -1,7 +1,7 @@
 <template>
   <footer
     class="row justify-between items-center no-wrap"
-    :style="{ minHeight: '62px', position: props.position }"
+    :style="{ minHeight: '62px', position: $props.pos }"
   >
     <p class="footer-content policy cursor-pointer">Privacy Policy</p>
     <p class="footer-content">Copyright (&COPY;) 2023 R3VI1E37</p>
@@ -18,17 +18,19 @@
 import { defineProps } from 'vue';
 
 const props = defineProps({
-  type: {
+  pos: {
     type: [String],
     required: false,
-    default: 'intro'
+    default: 'absolute'
   }
 });
 </script>
 
 <style lang="scss" scoped>
-footer {
-  position: absolute;
+footer,
+.q-footer {
+  // position: absolute;
+  background-color: rgba(0, 0, 0, 0);
   bottom: 0;
   left: 0;
   width: 100%;

@@ -1,6 +1,6 @@
 <template>
-  <div class="row no-wrap">
-    <div class="col q-gutter-y-lg q-mr-lg">
+  <div>
+    <div class="q-gutter-y-lg">
       <div>
         <p class="text-h5">TITLE</p>
         <q-separator dark spaced />
@@ -41,11 +41,11 @@
       </div>
     </div>
 
-    <div class="col">
-      <p class="text-h5">PREVIEW</p>
-      <q-separator dark spaced />
-      <div v-html="markdownToHtml"></div>
-    </div>
+    <!-- <div class="col">
+        <p class="text-h5">PREVIEW</p>
+        <q-separator dark spaced />
+        <div v-html="markdownToHtml"></div>
+      </div> -->
   </div>
 
   <div class="text-right">
@@ -64,6 +64,12 @@
       color="light-green-12"
       @click="userLoginRequest"
     />
+  </div>
+
+  <div class="mark-down col">
+    <p class="text-h5">PREVIEW</p>
+    <q-separator dark spaced />
+    <div v-html="markdownToHtml"></div>
   </div>
 </template>
 
@@ -106,7 +112,8 @@ const createPostRequest = async () => {
 const renderer = new marked.Renderer();
 renderer.code = (code, language) => {
   const validLanguage = hljs.getLanguage(language) ? language : 'plaintext';
-  const highlightedCode = hljs.highlight(validLanguage, code).value;
+  // const highlightedCode = hljs.highlight(validLanguage, code).value;
+  const highlightedCode = hljs.highlight(code, { language }).value;
   return `<pre><code class="hljs ${validLanguage}">${highlightedCode}</code></pre>`;
 };
 marked.setOptions({
@@ -132,26 +139,52 @@ const handlingTabKey = event => {
 </script>
 
 <style lang="scss">
-blockquote {
+// mark-down
+.mark-down {
+  font-size: 18px;
+  h6 {
+    font-size: 21px;
+  }
+  h5 {
+    font-size: 24px;
+  }
+  h4 {
+    font-size: 27px;
+  }
+  h3 {
+    font-size: 30px;
+  }
+  h2 {
+    font-size: 33px;
+  }
+  h1 {
+    font-size: 36px;
+  }
+}
+
+// markdown >
+.mark-down blockquote {
   padding-left: 20px;
   border-left: 3px solid $light-green-12;
 }
-code {
-  padding: 0 3px 0;
+// markdown Single code block
+.mark-down code {
+  padding: 0 5px 2px;
   color: $font-color;
   background-color: $grey-9;
   font-family: RoobertPRO, RoobertPRO override, sans-serif;
   border-radius: 3px;
 }
-code.hljs::before {
-  content: 'CODE \A \A';
-  white-space: pre;
-  color: $light-green-12;
-}
-code.hljs {
+// markdown Multi Code Block
+.mark-down code.hljs {
   border-radius: 4px;
   font-family: RoobertPRO, RoobertPRO override, sans-serif;
   background-color: $grey-10;
   font-size: 16px;
+}
+.mark-down code.hljs::before {
+  content: 'CODE \A \A';
+  white-space: pre;
+  color: $light-green-12;
 }
 </style>

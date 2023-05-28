@@ -14,7 +14,3 @@ export async function createPost(jsonData, dummy) {
   };
   return axios.post('/api/posts', formData, headers);
 }
-
-export async function userLogin(jsonData) {
-  return axios.post('/api/auth/login', jsonData);
-}

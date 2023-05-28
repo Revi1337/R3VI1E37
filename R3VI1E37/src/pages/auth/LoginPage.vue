@@ -173,7 +173,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { userLogin } from 'src/api/posts';
+import { userLogin } from 'src/api/auth';
 
 // User Login
 const userLoginData = ref({
