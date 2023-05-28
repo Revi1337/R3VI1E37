@@ -1,7 +1,6 @@
 package com.example.privmall.dto;
 
 import com.example.privmall.domain.UserAccount;
-import com.example.privmall.domain.enumerate.Gender;
 import com.example.privmall.domain.enumerate.Host;
 
 
@@ -11,12 +10,11 @@ public record UserAccountDto(
         String nickname,
         String password,
         String phone,
-        Gender gender,
         Host host,
         String roles
 ) {
-    public static UserAccountDto of(Long id, String email, String nickname, String password, String phone, Gender gender, Host host, String roles) {
-        return new UserAccountDto(id, email, nickname, password, phone, gender, host, roles);
+    public static UserAccountDto of(Long id, String email, String nickname, String password, String phone, Host host, String roles) {
+        return new UserAccountDto(id, email, nickname, password, phone, host, roles);
     }
 
     public static UserAccountDto from(UserAccount userAccount) {
@@ -26,7 +24,6 @@ public record UserAccountDto(
                 userAccount.getNickname(),
                 userAccount.getPassword(),
                 userAccount.getPhone(),
-                userAccount.getGender(),
                 userAccount.getHost(),
                 userAccount.getRoles()
         );
@@ -38,7 +35,6 @@ public record UserAccountDto(
                 .nickname(nickname)
                 .password(password)
                 .phone(phone)
-                .gender(gender)
                 .host(host)
                 .roles(roles)
                 .build();

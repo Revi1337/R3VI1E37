@@ -2,7 +2,6 @@ package com.example.privmall.config.domain;
 
 import com.example.privmall.domain.Article;
 import com.example.privmall.domain.UserAccount;
-import com.example.privmall.domain.enumerate.Gender;
 import com.example.privmall.repository.ArticleRepository;
 import com.example.privmall.repository.UserAccountRepository;
 import jakarta.annotation.PostConstruct;
@@ -60,7 +59,6 @@ public class InitializeDatabase {
                         .password(passwordEncoder.encode("1234"))
                         .nickname("test" + value)
                         .phone("phoneNum" + value)
-                        .gender(Gender.MALE)
                         .build();
                 userAccountRepository.save(userAccount);
                 Article article = Article.create()

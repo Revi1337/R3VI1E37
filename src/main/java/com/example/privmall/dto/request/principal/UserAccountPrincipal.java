@@ -1,6 +1,5 @@
-package com.example.privmall.dto.principal;
+package com.example.privmall.dto.request.principal;
 
-import com.example.privmall.domain.enumerate.Gender;
 import com.example.privmall.dto.UserAccountDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +11,6 @@ public record UserAccountPrincipal(
     String nickname,
     String password,
     String phone,
-    Gender gender,
     Set<String> roles
 ) implements UserDetails {
 
@@ -53,13 +51,12 @@ public record UserAccountPrincipal(
         return true;
     }
 
-    public static UserAccountPrincipal of(String email, String nickname, String password, String phone, Gender gender, Set<String> roles) {
+    public static UserAccountPrincipal of(String email, String nickname, String password, String phone, Set<String> roles) {
         return new UserAccountPrincipal(
                 email,
                 nickname,
                 password,
                 phone,
-                gender,
                 roles
         );
     }
@@ -71,7 +68,6 @@ public record UserAccountPrincipal(
                 userAccountDto.nickname(),
                 userAccountDto.password(),
                 userAccountDto.phone(),
-                userAccountDto.gender(),
                 new HashSet<>(roles)
         );
     }

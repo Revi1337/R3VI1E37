@@ -1,6 +1,5 @@
 package com.example.privmall.dto.request;
 
-import com.example.privmall.domain.enumerate.Gender;
 import com.example.privmall.domain.enumerate.Host;
 import com.example.privmall.dto.UserAccountDto;
 import jakarta.validation.constraints.Email;
@@ -11,11 +10,10 @@ public record JoinRequest(
         @NotBlank(message = "nickname must be specified") String nickname,
         String password,
         @NotBlank(message = "phone must be specified") String phone,
-        Gender gender,
         Host host
 ) {
-    public static JoinRequest of(String email, String nickname, String password, String phone, Gender gender, Host host) {
-        return new JoinRequest(email, nickname, password, phone, gender, host);
+    public static JoinRequest of(String email, String nickname, String password, String phone, Host host) {
+        return new JoinRequest(email, nickname, password, phone, host);
     }
 
     public UserAccountDto toDto() {
@@ -25,7 +23,6 @@ public record JoinRequest(
                 nickname,
                 password,
                 phone,
-                gender,
                 host,
                 null
         );
