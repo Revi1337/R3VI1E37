@@ -1,6 +1,6 @@
 package com.example.privmall.controller;
 
-import com.example.privmall.dto.principal.UserAccountPrincipal;
+import com.example.privmall.dto.request.principal.UserAccountPrincipal;
 import com.example.privmall.dto.request.SearchCondition;
 import com.example.privmall.dto.request.JoinRequest;
 import com.example.privmall.dto.response.UserAccountResponse;

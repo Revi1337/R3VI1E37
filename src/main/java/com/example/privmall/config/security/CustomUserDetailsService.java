@@ -1,7 +1,7 @@
 package com.example.privmall.config.security;
 
 import com.example.privmall.dto.UserAccountDto;
-import com.example.privmall.dto.principal.UserAccountPrincipal;
+import com.example.privmall.dto.request.principal.UserAccountPrincipal;
 import com.example.privmall.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

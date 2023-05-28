@@ -7,7 +7,6 @@ import com.example.privmall.dto.request.JoinRequest;
 import com.example.privmall.dto.response.UserAccountResponse;
 import com.example.privmall.exception.DuplicateEmailException;
 import com.example.privmall.exception.UserNotFoundException;
-import com.example.privmall.repository.ArticleRepository;
 import com.example.privmall.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,8 +23,6 @@ public class UserAccountService {
 
     private final PasswordEncoder passwordEncoder;
 
-
-
     @Transactional
     public void createUserAccount(JoinRequest joinRequest) {
         String joinEmail = joinRequest.email();
@@ -39,7 +36,6 @@ public class UserAccountService {
         );
     }
 
-    @Transactional
     public UserAccountResponse searchUserAccount(Long userId) {
         return userAccountRepository
                 .findById(userId)

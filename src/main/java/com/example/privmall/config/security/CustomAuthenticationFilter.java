@@ -1,6 +1,6 @@
 package com.example.privmall.config.security;
 
-import com.example.privmall.dto.principal.UserAccountPrincipal;
+import com.example.privmall.dto.request.principal.UserAccountPrincipal;
 import com.example.privmall.dto.request.LoginRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;

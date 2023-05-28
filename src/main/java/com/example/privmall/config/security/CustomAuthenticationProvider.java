@@ -1,6 +1,6 @@
 package com.example.privmall.config.security;
 
-import com.example.privmall.dto.principal.UserAccountPrincipal;
+import com.example.privmall.dto.request.principal.UserAccountPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
