@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -27,6 +28,8 @@ public class SecurityFilterChainConfig {
 
     private final PrincipalOauth2UserService principalOauth2UserService;
 
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 //        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
@@ -36,13 +39,15 @@ public class SecurityFilterChainConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
-                .apply(new CustomConfig(jwtService, userAccountRepository)).and()
+                .apply(new CustomConfig(jwtService, userAccountRepository, authenticationEntryPoint)).and()
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers("/api/posts").authenticated()
                         .requestMatchers("/**").permitAll())
                 .oauth2Login(oauth -> oauth
                         .loginPage("/")
                         .userInfoEndpoint()
                         .userService(principalOauth2UserService))
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
                 .build();
     }
 
@@ -50,12 +55,15 @@ public class SecurityFilterChainConfig {
     public static class CustomConfig extends AbstractHttpConfigurer<CustomConfig, HttpSecurity> {
         private final JwtService jwtService;
         private final UserAccountRepository userAccountRepository;
+        private final AuthenticationEntryPoint authenticationEntryPoint;
         @Override
         public void configure(HttpSecurity httpSecurity) {
             AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
             httpSecurity
                     .addFilter(new CustomAuthenticationFilter(authenticationManager, jwtService))
-                    .addFilter(new CustomValidationFilter(authenticationManager, jwtService, userAccountRepository));
+                    .addFilter(new CustomValidationFilter(
+                            authenticationManager, jwtService, userAccountRepository, authenticationEntryPoint
+                    ));
         }
     }
 

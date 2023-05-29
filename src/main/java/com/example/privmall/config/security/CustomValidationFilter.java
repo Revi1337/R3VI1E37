@@ -2,10 +2,10 @@ package com.example.privmall.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.privmall.dto.UserAccountDto;
 import com.example.privmall.dto.request.principal.UserAccountPrincipal;
-import com.example.privmall.exception.JwtSignatureException;
+import com.example.privmall.exception.CustomJwtException;
 import com.example.privmall.repository.UserAccountRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.io.IOException;
@@ -30,9 +31,9 @@ public class CustomValidationFilter extends BasicAuthenticationFilter {
 
     public CustomValidationFilter(AuthenticationManager authenticationManager,
                                   JwtService jwtService,
-                                  UserAccountRepository userAccountRepository) {
-        super(authenticationManager);
-
+                                  UserAccountRepository userAccountRepository,
+                                  AuthenticationEntryPoint authenticationEntryPoint) {
+        super(authenticationManager, authenticationEntryPoint);
         this.jwtService = jwtService;
         this.userAccountRepository = userAccountRepository;
     }
@@ -55,8 +56,9 @@ public class CustomValidationFilter extends BasicAuthenticationFilter {
                     .verify(jwtToken)
                     .getClaim("sub")
                     .asString();
-        } catch (SignatureVerificationException exception) {
-            throw new JwtSignatureException(); // TODO JWT 를 포함해서 Security 관련오류는 DispatcherServlet 을 지나 Controller 에 도착하기전에 익셉션을 던지기 때문에 @ControllerAdvice 에서 잡아줄 수 없음. 따라서 추 후 방법을 생각해내야 한다.
+        } catch (JWTVerificationException jwtVerificationException) {
+            getAuthenticationEntryPoint().commence(request, response, new CustomJwtException(jwtVerificationException));
+            return;
         }
         UserAccountPrincipal userAccountPrincipal = userAccountRepository.findByEmail(email)
                 .map(UserAccountDto::from)

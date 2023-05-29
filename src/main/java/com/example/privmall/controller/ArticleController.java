@@ -4,7 +4,6 @@ import com.example.privmall.dto.request.ArticleRegisterRequest;
 import com.example.privmall.dto.request.SearchCondition;
 import com.example.privmall.dto.request.principal.UserAccountPrincipal;
 import com.example.privmall.dto.response.ArticleResponse;
-import com.example.privmall.exception.PrivilegeException;
 import com.example.privmall.service.ArticleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +34,9 @@ public class ArticleController {
     public void createArticle(
             @AuthenticationPrincipal UserAccountPrincipal userAccountPrincipal,
             @RequestBody ArticleRegisterRequest articleRegisterRequest) throws IOException {
-        if (userAccountPrincipal == null)
-            throw new PrivilegeException("this endpoint must be called by authenticated user");
         articleService.createArticle(userAccountPrincipal, articleRegisterRequest);
         log.info("Principal : {} , Request : {}", userAccountPrincipal, articleRegisterRequest);
+
     }
 
 //    @PostMapping(path = "/api/posts")
