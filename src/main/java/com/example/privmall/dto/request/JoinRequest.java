@@ -9,11 +9,10 @@ public record JoinRequest(
         @NotBlank(message = "email must be specified") @Email(message = "must be email format") String email,
         @NotBlank(message = "nickname must be specified") String nickname,
         String password,
-        @NotBlank(message = "phone must be specified") String phone,
         Host host
 ) {
-    public static JoinRequest of(String email, String nickname, String password, String phone, Host host) {
-        return new JoinRequest(email, nickname, password, phone, host);
+    public static JoinRequest of(String email, String nickname, String password, Host host) {
+        return new JoinRequest(email, nickname, password, host);
     }
 
     public UserAccountDto toDto() {
@@ -22,21 +21,9 @@ public record JoinRequest(
                 email,
                 nickname,
                 password,
-                phone,
                 host,
                 null
         );
     }
-
-//    public UserAccount toEntity() {
-//        return UserAccount.create()
-//                .email(email)
-//                .nickname(nickname)
-//                .password(password)
-//                .phone(phone)
-//                .gender(gender)
-//                .host(host)
-//                .build();
-//    }
 
 }

@@ -21,7 +21,7 @@ public class UserAccount {
     @Column(name = "USER_ID")
     private Long id;
 
-    @Column(name = "EMAIL", nullable = false, length = 40)
+    @Column(name = "EMAIL", nullable = false, length = 60)
     private String email;
 
     @Column(name = "NICKNAME", nullable = false, length = 15)
@@ -29,9 +29,6 @@ public class UserAccount {
 
     @Column(name = "PASSWORD", length = 70)
     private String password;
-
-    @Column(name = "PHONE", nullable = false, length = 20)
-    private String phone;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "HOST", length = 15)
@@ -67,17 +64,14 @@ public class UserAccount {
                         String email,
                         String nickname,
                         String password,
-                        String phone,
                         Host host,
                         String roles) {
         Assert.notNull(email, "email field must be specified");
         Assert.notNull(nickname, "nickname field must be specified");
-        Assert.notNull(phone, "phone field must be specified");
         this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.phone = phone;
         this.host = host == null ? Host.GENERAL : host;
         this.roles = roles == null ? RoleType.USER.toString() : roles;
     }

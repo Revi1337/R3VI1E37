@@ -12,7 +12,6 @@ public record UserAccountPrincipal(
     String email,
     String nickname,
     String password,
-    String phone,
     Set<String> roles
 ) implements UserDetails {
 
@@ -53,13 +52,12 @@ public record UserAccountPrincipal(
         return true;
     }
 
-    public static UserAccountPrincipal of(Long id, String email, String nickname, String password, String phone, Set<String> roles) {
+    public static UserAccountPrincipal of(Long id, String email, String nickname, String password, Set<String> roles) {
         return new UserAccountPrincipal(
                 id,
                 email,
                 nickname,
                 password,
-                phone,
                 roles
         );
     }
@@ -71,7 +69,6 @@ public record UserAccountPrincipal(
                 userAccountDto.email(),
                 userAccountDto.nickname(),
                 userAccountDto.password(),
-                userAccountDto.phone(),
                 new HashSet<>(roles)
         );
     }
@@ -82,7 +79,6 @@ public record UserAccountPrincipal(
                 email,
                 nickname,
                 password,
-                phone,
                 Host.GENERAL,
                 Arrays.toString(this.roles.toArray(String[]::new))
         );

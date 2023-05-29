@@ -58,7 +58,6 @@ public class InitializeDatabase {
                         .email("test" + value + "@.com")
                         .password(passwordEncoder.encode("1234"))
                         .nickname("test" + value)
-                        .phone("phoneNum" + value)
                         .build();
                 userAccountRepository.save(userAccount);
                 Article article = Article.create()
