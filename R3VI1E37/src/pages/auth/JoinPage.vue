@@ -297,54 +297,6 @@
                   />
                 </template>
               </q-input>
-
-              <q-input
-                no-error-icon
-                filled
-                hint=""
-                :spellcheck="false"
-                dense
-                dark
-                color="light-green-12"
-                label-color="light-green-12"
-                outlined
-                v-model="registerRequest.phone"
-                label="Phone"
-                :rules="[
-                  phone => phoneValidMethod(phone) || 'Phone is required'
-                ]"
-                lazy-rules
-              >
-                <template #append>
-                  <q-icon
-                    color="light-green-12"
-                    :name="phoneValidStatus ? 'check' : ''"
-                  />
-                </template>
-              </q-input>
-
-              <q-radio
-                dense
-                dark
-                color="light-green-12"
-                v-model="registerRequest.gender"
-                checked-icon="task_alt"
-                unchecked-icon="panorama_fish_eye"
-                val="MALE"
-                label="Male"
-                class="q-mr-lg"
-              />
-
-              <q-radio
-                dense
-                dark
-                color="light-green-12"
-                v-model="registerRequest.gender"
-                checked-icon="task_alt"
-                unchecked-icon="panorama_fish_eye"
-                val="FEMALE"
-                label="Female"
-              />
             </q-card-section>
 
             <q-card-section>
@@ -373,9 +325,7 @@ import { joinUser } from 'src/api/auth';
 const registerRequest = ref({
   nickname: 'revi1337',
   email: 'FUCK5@com',
-  password: 'asdf',
-  gender: 'MALE',
-  phone: '010-3551-1998'
+  password: 'asdf'
 });
 
 // Join Request
@@ -384,9 +334,7 @@ const joinUserRequest = async () => {
     const jsonData = {
       nickname: registerRequest.value.nickname,
       email: registerRequest.value.email,
-      password: registerRequest.value.password,
-      gender: registerRequest.value.gender,
-      phone: registerRequest.value.phone
+      password: registerRequest.value.password
     };
     await joinUser(jsonData);
   } catch (error) {
@@ -441,23 +389,12 @@ const passwordValidMethod = password => {
   return true;
 };
 
-const phoneValidStatus = ref(false);
-const phoneValidMethod = phone => {
-  if (!phone) {
-    phoneValidStatus.value = false;
-    return false;
-  }
-  phoneValidStatus.value = true;
-  return true;
-};
-
 const successValidate = computed(
   () =>
     nicknameValidStatus.value &&
     emailValidStatus.value &&
     passwordValidStatus.value &&
-    confirmPasswordStatus.value &&
-    phoneValidStatus.value
+    confirmPasswordStatus.value
 );
 </script>
 

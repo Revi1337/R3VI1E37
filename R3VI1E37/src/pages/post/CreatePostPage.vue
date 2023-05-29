@@ -92,7 +92,7 @@ public static void main(String args[])
 
 
   `,
-  hashtag: null
+  hashtag: 'dummyTag'
 });
 const createPostRequest = async () => {
   try {
