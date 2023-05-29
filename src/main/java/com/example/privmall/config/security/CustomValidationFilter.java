@@ -56,7 +56,7 @@ public class CustomValidationFilter extends BasicAuthenticationFilter {
                     .getClaim("sub")
                     .asString();
         } catch (SignatureVerificationException exception) {
-            throw new JwtSignatureException();
+            throw new JwtSignatureException(); // TODO JWT 를 포함해서 Security 관련오류는 DispatcherServlet 을 지나 Controller 에 도착하기전에 익셉션을 던지기 때문에 @ControllerAdvice 에서 잡아줄 수 없음. 따라서 추 후 방법을 생각해내야 한다.
         }
         UserAccountPrincipal userAccountPrincipal = userAccountRepository.findByEmail(email)
                 .map(UserAccountDto::from)
