@@ -307,28 +307,4 @@ const goTarget = url => window.open(url, '_blank');
   position: relative;
   top: -75px;
 }
-// footer {
-//   position: absolute;
-//   bottom: 0;
-//   left: 0;
-//   width: 100%;
-//   padding: 0 75px 0;
-// }
-// .policy {
-//   position: relative;
-//   text-decoration: none;
-// }
-// .policy:before {
-//   content: '';
-//   position: absolute;
-//   bottom: -2px;
-//   left: 0;
-//   width: 0;
-//   height: 2px;
-//   background-color: $font-color;
-//   transition: width 0.3s ease-in-out;
-// }
-// .policy:hover:before {
-//   width: 100%;
-// }
 </style>

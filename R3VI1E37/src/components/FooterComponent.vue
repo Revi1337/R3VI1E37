@@ -6,12 +6,6 @@
     <p class="footer-content policy cursor-pointer">Privacy Policy</p>
     <p class="footer-content">Copyright (&COPY;) 2023 R3VI1E37</p>
   </footer>
-  <!-- <footer class="row justify-center" :style="{ minHeight: '62px' }">
-    <div class="col-8 row items-center justify-between no-wrap">
-      <p class="footer-content policy cursor-pointer">Privacy Policy</p>
-      <p class="footer-content">Copyright (&COPY;) 2023 R3VI1E37</p>
-    </div>
-  </footer> -->
 </template>
 
 <script setup>
