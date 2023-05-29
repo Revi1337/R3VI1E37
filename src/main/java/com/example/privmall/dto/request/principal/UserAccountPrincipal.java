@@ -1,5 +1,6 @@
 package com.example.privmall.dto.request.principal;
 
+import com.example.privmall.domain.enumerate.Host;
 import com.example.privmall.dto.UserAccountDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 
 public record UserAccountPrincipal(
+    Long id,
     String email,
     String nickname,
     String password,
@@ -51,8 +53,9 @@ public record UserAccountPrincipal(
         return true;
     }
 
-    public static UserAccountPrincipal of(String email, String nickname, String password, String phone, Set<String> roles) {
+    public static UserAccountPrincipal of(Long id, String email, String nickname, String password, String phone, Set<String> roles) {
         return new UserAccountPrincipal(
+                id,
                 email,
                 nickname,
                 password,
@@ -64,11 +67,24 @@ public record UserAccountPrincipal(
     public static UserAccountPrincipal from(UserAccountDto userAccountDto) {
         List<String> roles = userAccountDto.toEntity().getAuthorities().stream().map(s -> "ROLE_" + s).toList();
         return UserAccountPrincipal.of(
+                userAccountDto.id(),
                 userAccountDto.email(),
                 userAccountDto.nickname(),
                 userAccountDto.password(),
                 userAccountDto.phone(),
                 new HashSet<>(roles)
+        );
+    }
+
+    public UserAccountDto toDto() {
+        return UserAccountDto.of(
+                id,
+                email,
+                nickname,
+                password,
+                phone,
+                Host.GENERAL,
+                Arrays.toString(this.roles.toArray(String[]::new))
         );
     }
 

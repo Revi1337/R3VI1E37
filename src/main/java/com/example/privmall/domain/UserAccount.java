@@ -63,7 +63,8 @@ public class UserAccount {
     protected UserAccount() {}
 
     @Builder(builderMethodName = "create")
-    private UserAccount(String email,
+    private UserAccount(Long id,
+                        String email,
                         String nickname,
                         String password,
                         String phone,
@@ -72,6 +73,7 @@ public class UserAccount {
         Assert.notNull(email, "email field must be specified");
         Assert.notNull(nickname, "nickname field must be specified");
         Assert.notNull(phone, "phone field must be specified");
+        this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.password = password;

@@ -31,6 +31,7 @@ public record UserAccountDto(
 
     public UserAccount toEntity() {
         return UserAccount.create()
+                .id(id)
                 .email(email)
                 .nickname(nickname)
                 .password(password)
