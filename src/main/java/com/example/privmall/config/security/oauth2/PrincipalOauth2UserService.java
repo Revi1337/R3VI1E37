@@ -8,6 +8,7 @@ import com.example.privmall.dto.request.principal.OAuth2UserInfoPrincipal;
 import com.example.privmall.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -19,7 +20,9 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
-@Component @Slf4j @RequiredArgsConstructor
+@Component
+@Slf4j
+@RequiredArgsConstructor
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     // 구글로부터 받은 userRequest 데이터가 후처리되는 함수
     // 함수 종료시 @AuthenticationPrincipal 어노테이션이 만들어진다.
@@ -36,18 +39,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String clientId = userRequest.getClientRegistration().getRegistrationId();
         OAuth2UserInfo oAuth2UserInfo = retrieveOAuth2UserInfo(clientId, attributes);
 
-        UserAccount userAccount = UserAccount.create()
-                .email(userRequest.getClientRegistration().getRegistrationId() + "_" + oAuth2UserInfo.getNickname() + "_" + oAuth2UserInfo.getId())
-                .nickname(oAuth2UserInfo.getNickname())
-                .password(passwordEncoder.encode(oAuth2UserInfo.getNickname() + oAuth2UserInfo.getId()))
-                .host(Arrays.stream(Host.values())
-                                .filter(host -> host.toString().equals(clientId.toUpperCase()))
-                                .findFirst()
-                                .get())
-                .roles(RoleType.USER.toString())
-                .build();
-        userAccountRepository.save(userAccount);
-
+        String email = userRequest.getClientRegistration().getRegistrationId()
+                + "_" + oAuth2UserInfo.getNickname() + "_" + oAuth2UserInfo.getId();
+        if (! checkOAuth2UserDuplicate(email))
+            forceJoinUserAccount(userRequest, clientId, oAuth2UserInfo);
         return new OAuth2UserInfoPrincipal(oAuth2UserInfo, attributes, Set.of(RoleType.USER.toString()));
     }
 
@@ -57,7 +52,25 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             case "github" -> new GithubUserInfo(attributes);
             case "naver" -> new NaverUserInfo(attributes);
             case "facebook" -> new FacebookUserInfo(attributes);
-            default -> null;
+            default -> throw new IllegalStateException("invalid clientId");         // TODO Need to Make Custom Exception
         };
+    }
+
+    protected boolean checkOAuth2UserDuplicate(String email) {
+        return userAccountRepository.findByEmail(email).isPresent();
+    }
+
+    private void forceJoinUserAccount(OAuth2UserRequest userRequest, String clientId, OAuth2UserInfo oAuth2UserInfo) {
+        UserAccount userAccount = UserAccount.create()
+                .email(userRequest.getClientRegistration().getRegistrationId() + "_" + oAuth2UserInfo.getNickname() + "_" + oAuth2UserInfo.getId())
+                .nickname(oAuth2UserInfo.getNickname())
+                .password(passwordEncoder.encode(oAuth2UserInfo.getNickname() + oAuth2UserInfo.getId()))
+                .host(Arrays.stream(Host.values())
+                        .filter(host -> host.toString().equals(clientId.toUpperCase()))
+                        .findFirst()
+                        .orElseThrow(IllegalStateException::new))                   // TODO Need to Make Custom Exception
+                .roles(RoleType.USER.toString())
+                .build();
+        userAccountRepository.save(userAccount);
     }
 }
