@@ -1,5 +1,6 @@
 package com.example.privmall.domain;
 
+import com.example.privmall.domain.enumerate.Category;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.util.Assert;
@@ -9,9 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-@Getter @ToString
+@Getter @ToString(callSuper = true)
 @Entity @Table(name = "ARTICLE")
-public class Article {
+public class Article extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ARTICLE_ID")
@@ -20,8 +21,12 @@ public class Article {
     @Column(name = "TITLE", nullable = false, length = 100)
     private String title;
 
+    @Lob
     @Column(name = "CONTENT", nullable = false)
     private String content;
+
+    @Enumerated(value = EnumType.STRING)
+    private Category category;
 
     @Column(name = "HASHTAG", length = 100)
     private String hashtag;
@@ -72,13 +77,16 @@ public class Article {
     private Article(UserAccount userAccount,
                     String title,
                     String content,
+                    Category category,
                     String hashtag) {
         Assert.notNull(userAccount, "userAccount field must be specified");
         Assert.notNull(title, "title field must be specified");
+        Assert.notNull(category, "category field must be specified");
         Assert.notNull(content, "content field must be specified");
         this.userAccount = userAccount;
         this.title = title;
         this.content = content;
+        this.category = category;
         this.hashtag = hashtag;
     }
 

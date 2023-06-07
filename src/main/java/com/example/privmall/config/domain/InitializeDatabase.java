@@ -2,6 +2,7 @@ package com.example.privmall.config.domain;
 
 import com.example.privmall.domain.Article;
 import com.example.privmall.domain.UserAccount;
+import com.example.privmall.domain.enumerate.Category;
 import com.example.privmall.repository.ArticleRepository;
 import com.example.privmall.repository.UserAccountRepository;
 import jakarta.annotation.PostConstruct;
@@ -61,6 +62,7 @@ public class InitializeDatabase {
                         .build();
                 userAccountRepository.save(userAccount);
                 Article article = Article.create()
+                        .category(Category.CS)
                         .title("title" + value)
                         .content("content" + value)
                         .userAccount(userAccount)
