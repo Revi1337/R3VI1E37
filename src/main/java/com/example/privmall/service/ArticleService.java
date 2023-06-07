@@ -1,12 +1,8 @@
 package com.example.privmall.service;
 
 import com.example.privmall.domain.Article;
-import com.example.privmall.domain.UserAccount;
 import com.example.privmall.dto.ArticleDto;
-import com.example.privmall.dto.request.ArticleRegisterRequest;
 import com.example.privmall.dto.request.SearchCondition;
-import com.example.privmall.dto.request.principal.UserAccountPrincipal;
-import com.example.privmall.dto.response.ArticleResponse;
 import com.example.privmall.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,20 +18,23 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     @Transactional
-    public void createArticle(UserAccountPrincipal userAccountPrincipal,
-                              ArticleRegisterRequest articleRegisterRequest) {
-        UserAccount userAccount = userAccountPrincipal.toDto().toEntity();
-        ArticleDto articleDto = ArticleDto.from(articleRegisterRequest);
-        Article article = articleDto.toEntity(userAccount);
+    public void createArticle(ArticleDto articleDto) {
+        Article article = articleDto.toEntity(articleDto.userAccountDto().toEntity());
         articleRepository.save(article);
     }
 
-    public List<ArticleResponse> searchAllArticle(SearchCondition searchCondition) {
+    public List<ArticleDto> searchAllArticle(SearchCondition searchCondition) {
         return articleRepository
                 .searchAllArticle(searchCondition)
                 .stream()
-                .map(ArticleResponse::from)
+                .map(ArticleDto::from)
                 .toList();
+    }
+
+    public ArticleDto searchById(Long id) {
+        return articleRepository.findById(id)
+                .map(ArticleDto::from)
+                .orElseThrow(IllegalStateException::new);               // TODO 커스텀익셉션 박아주어야한다.
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.privmall.config.security;
 
+import com.example.privmall.config.security.oauth2.CustomOAuth2SuccessHandler;
 import com.example.privmall.config.security.oauth2.PrincipalOauth2UserService;
 import com.example.privmall.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,10 +42,10 @@ public class SecurityFilterChainConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .apply(new CustomConfig(jwtService, userAccountRepository, authenticationEntryPoint)).and()
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/posts").authenticated()
-                        .requestMatchers("/**").permitAll())
+                        .anyRequest().permitAll())
                 .oauth2Login(oauth -> oauth
                         .loginPage("/")
+                        .successHandler(new CustomOAuth2SuccessHandler(jwtService))
                         .userInfoEndpoint()
                         .userService(principalOauth2UserService))
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))

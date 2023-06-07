@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,27 +26,30 @@ public class ArticleController {
     @GetMapping(path = "/api/posts")
     public ResponseEntity<List<ArticleResponse>> searchAllArticle(
             @Valid SearchCondition searchCondition) {
+        List<ArticleResponse> articleResponses = articleService.searchAllArticle(searchCondition)
+                .stream().map(ArticleResponse::from).toList();
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(articleService.searchAllArticle(searchCondition));
+                .body(articleResponses);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(path = "/api/posts")
     public void createArticle(
             @AuthenticationPrincipal UserAccountPrincipal userAccountPrincipal,
-            @RequestBody ArticleRegisterRequest articleRegisterRequest) throws IOException {
-        articleService.createArticle(userAccountPrincipal, articleRegisterRequest);
+            @RequestBody @Valid ArticleRegisterRequest articleRegisterRequest) throws IOException {
+        articleService.createArticle(
+                articleRegisterRequest.toDto(userAccountPrincipal.toDto())
+        );
         log.info("Principal : {} , Request : {}", userAccountPrincipal, articleRegisterRequest);
-
     }
 
-//    @PostMapping(path = "/api/posts")
-//    public void createArticle(
-//            @RequestHeader(value = "Authorization") String email,
-//            @RequestPart(value = "request") ArticleRegisterRequest articleRegisterRequest,
-//            @RequestPart(value = "file", required = false) MultipartFile multipartFile) throws IOException {
-//        articleService.createArticle(email, articleRegisterRequest, multipartFile);
-//        log.info("request : {}, file : {}", articleRegisterRequest, multipartFile);
-//    }
+    @GetMapping(path = "/api/post/{id}")
+    public ResponseEntity<ArticleResponse> searchById(@PathVariable(name = "id") Long id) {
+        ArticleResponse articleResponse = ArticleResponse.from(articleService.searchById(id));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(articleResponse);
+    }
 
 }
