@@ -4,6 +4,8 @@ import com.example.privmall.domain.Article;
 import com.example.privmall.domain.UserAccount;
 import com.example.privmall.domain.enumerate.Category;
 
+import java.time.LocalDateTime;
+
 
 public record ArticleDto(
         Long id,
@@ -11,16 +13,20 @@ public record ArticleDto(
         String title,
         String content,
         Category category,
-        String hashtag
+        String hashtag,
+        LocalDateTime createdAt,
+        String createdBy
 ) {
     public static ArticleDto of(Long id,
                                 UserAccountDto userAccountDto,
                                 String title,
                                 String content,
                                 Category category,
-                                String hashtag) {
+                                String hashtag,
+                                LocalDateTime createdAt,
+                                String createdBy) {
         return new ArticleDto(
-                id, userAccountDto, title, content, category, hashtag
+                id, userAccountDto, title, content, category, hashtag, createdAt, createdBy
         );
     }
 
@@ -31,7 +37,9 @@ public record ArticleDto(
                 article.getTitle(),
                 article.getContent(),
                 article.getCategory(),
-                article.getHashtag()
+                article.getHashtag(),
+                article.getCreatedAt(),
+                article.getCreatedBy()
         );
     }
 

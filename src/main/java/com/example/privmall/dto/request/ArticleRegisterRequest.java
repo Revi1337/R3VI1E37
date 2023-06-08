@@ -25,7 +25,9 @@ public record ArticleRegisterRequest(
                         .filter(preCategory -> preCategory.getDescription().equalsIgnoreCase(category))
                         .findFirst()
                         .orElseThrow(IllegalArgumentException::new),    // TODO 일치하지 않는 카테고리가 없다는 Exception 을 만들어서 던져주어야 한다.
-                hashTag
+                hashTag,
+                null,
+                null
          );
     }
 
