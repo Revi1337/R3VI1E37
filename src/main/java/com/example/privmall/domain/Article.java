@@ -26,6 +26,7 @@ public class Article extends BaseEntity {
     private String content;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "category")
     private Category category;
 
     @Column(name = "HASHTAG", length = 100)

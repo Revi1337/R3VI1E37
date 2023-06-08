@@ -8,7 +8,7 @@ public enum Category {
     CTF("ctf"),
     WRITEUP("writeup"),
     CS("cs"),
-    CHEETSHEET("cheet");
+    CHEETSHEET("cheetsheet");
 
     private final String description;
 
