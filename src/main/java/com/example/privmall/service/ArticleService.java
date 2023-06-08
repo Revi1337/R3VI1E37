@@ -3,6 +3,7 @@ package com.example.privmall.service;
 import com.example.privmall.domain.Article;
 import com.example.privmall.dto.ArticleDto;
 import com.example.privmall.dto.request.SearchCondition;
+import com.example.privmall.dto.request.SearchTypeCondition;
 import com.example.privmall.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +24,9 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
-    public List<ArticleDto> searchAllArticle(SearchCondition searchCondition) {
+    public List<ArticleDto> searchAllArticle(SearchTypeCondition searchTypeCondition, SearchCondition searchCondition) {
         return articleRepository
-                .searchAllArticle(searchCondition)
+                .searchAllArticle(searchTypeCondition, searchCondition)
                 .stream()
                 .map(ArticleDto::from)
                 .toList();

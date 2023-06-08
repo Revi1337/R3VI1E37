@@ -2,6 +2,7 @@ package com.example.privmall.controller;
 
 import com.example.privmall.dto.request.ArticleRegisterRequest;
 import com.example.privmall.dto.request.SearchCondition;
+import com.example.privmall.dto.request.SearchTypeCondition;
 import com.example.privmall.dto.request.principal.UserAccountPrincipal;
 import com.example.privmall.dto.response.ArticleResponse;
 import com.example.privmall.service.ArticleService;
@@ -25,8 +26,10 @@ public class ArticleController {
 
     @GetMapping(path = "/api/posts")
     public ResponseEntity<List<ArticleResponse>> searchAllArticle(
-            @Valid SearchCondition searchCondition) {
-        List<ArticleResponse> articleResponses = articleService.searchAllArticle(searchCondition)
+            SearchTypeCondition searchTypeCondition,
+            @Valid SearchCondition searchCondition
+    ) {
+        List<ArticleResponse> articleResponses = articleService.searchAllArticle(searchTypeCondition, searchCondition)
                 .stream().map(ArticleResponse::from).toList();
         return ResponseEntity
                 .status(HttpStatus.OK)
