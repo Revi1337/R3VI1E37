@@ -1,5 +1,5 @@
 <template>
-  <q-layout>
+  <q-layout :style="{ padding: `0 ${layoutPadding}px !important` }">
     <q-header class="row justify-between no-wrap">
       <svg
         width="135.806"
@@ -22,39 +22,46 @@
       </svg>
 
       <div class="col-shrink text-right">
+        <!-- <q-tabs outside-arrows dense v-model="tab" align="justify">
+          <q-route-tab :ripple="false" name="dev" label="DEV" :to="{ name: 'DevPost' }" exact />
+          <q-route-tab :ripple="false" name="ctf" label="CTF" :to="{ name: 'CtfPost' }" exact />
+          <q-route-tab :ripple="false" name="writeup" label="WRITE UP" :to="{ name: 'WriteupPost' }" exact />
+          <q-route-tab :ripple="false" name="cs" label="Computer Science" :to="{ name: 'CSPost' }" exact />
+          <q-route-tab name="cheet_sheet" label="Cheet Sheet" :to="{ name: 'CheetPost' }" exact />
+        </q-tabs> -->
         <q-tabs outside-arrows dense v-model="tab" align="justify">
           <q-route-tab
             :ripple="false"
-            name="web"
-            label="WEB"
-            :to="{ name: 'Web' }"
+            name="dev"
+            label="DEV"
+            :to="{ name: 'CategoryPost', params: { category: 'dev' } }"
             exact
           />
           <q-route-tab
             :ripple="false"
-            name="hacking"
-            label="HACKING"
-            :to="{ name: 'Hacking' }"
+            name="ctf"
+            label="CTF"
+            :to="{ name: 'CategoryPost', params: { category: 'ctf' } }"
             exact
           />
           <q-route-tab
             :ripple="false"
-            name="pentest"
-            label="PENTEST"
-            :to="{ name: 'Pentest' }"
+            name="writeup"
+            label="WRITE UP"
+            :to="{ name: 'CategoryPost', params: { category: 'writeup' } }"
             exact
           />
           <q-route-tab
             :ripple="false"
             name="cs"
             label="Computer Science"
-            :to="{ name: 'CS' }"
+            :to="{ name: 'CategoryPost', params: { category: 'cs' } }"
             exact
           />
           <q-route-tab
             name="cheet_sheet"
             label="Cheet Sheet"
-            :to="{ name: 'Cheet' }"
+            :to="{ name: 'CategoryPost', params: { category: 'cheetsheet' } }"
             exact
           />
         </q-tabs>
@@ -71,14 +78,7 @@
         />
         <q-btn flat round dense icon="fa-brands fa-twitter" />
         <div>
-          <q-btn
-            flat
-            round
-            dense
-            size="md"
-            icon="fa-regular fa-pen-to-square"
-            :to="{ name: 'Post' }"
-          />
+          <q-btn flat round dense size="md" icon="fa-regular fa-pen-to-square" :to="{ name: 'CreatePost' }" />
         </div>
 
         <q-btn rounded outline>
@@ -92,13 +92,7 @@
           </div>
         </q-btn>
 
-        <q-btn
-          flat
-          round
-          dense
-          icon="fa-solid fa-right-to-bracket"
-          :to="{ name: 'Login' }"
-        />
+        <q-btn flat round dense icon="fa-solid fa-right-to-bracket" :to="{ name: 'Login' }" />
       </div>
     </q-header>
 
@@ -115,9 +109,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import FooterComponent from 'src/components/FooterComponent.vue';
+
+// configure layout
+const layoutPadding = computed(() => {
+  const defaultPadding = 350;
+  const route = useRoute();
+  const meta = route.meta;
+  if (meta && meta.layoutPadding !== undefined) {
+    return meta.layoutPadding;
+  } else {
+    return defaultPadding;
+  }
+});
 
 const tab = ref('');
 const router = useRouter();
@@ -128,10 +134,10 @@ const goHome = () => {
 </script>
 
 <style lang="scss" scoped>
-.q-layout,
+// .q-layout,
 .q-footer,
 .q-header {
-  padding: 0 275px;
+  padding: 0 350px;
   width: 100%;
 }
 .q-header {

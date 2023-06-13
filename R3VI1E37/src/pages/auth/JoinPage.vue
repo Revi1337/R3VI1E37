@@ -1,6 +1,6 @@
 <template>
   <div class="fullscreen row no-wrap">
-    <div class="col-5 row justify-end items-center bg-grey-10">
+    <div class="col-5 row justify-end items-center bg-dark">
       <div class="invite q-gutter-y-xl">
         <div class="flex flex-center">
           <transition appear enter-active-class="animated fadeInDownBig">
@@ -13,13 +13,7 @@
               @click="$router.push({ name: 'Intro' })"
             >
               <defs>
-                <linearGradient
-                  id="r3vi1e37"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="100%"
-                >
+                <linearGradient id="r3vi1e37" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#42B883" />
                   <stop offset="100%" stop-color="#1987bd" />
                 </linearGradient>
@@ -46,10 +40,7 @@
               </q-avatar>
               <div class="invite-message">
                 <p class="text-weight-bold">Join The Community</p>
-                <p
-                  class="text-blue-grey-4"
-                  :style="{ maxWidth: '300px', lineHeight: '1.4' }"
-                >
+                <p class="text-blue-grey-4" :style="{ maxWidth: '300px', lineHeight: '1.4' }">
                   A massively growing community of cyber security enthusiasts.
                 </p>
               </div>
@@ -66,12 +57,8 @@
               </q-avatar>
               <div class="invite-message">
                 <p class="text-weight-bold">Train Like A Pro</p>
-                <p
-                  class="text-blue-grey-4"
-                  :style="{ maxWidth: '300px', lineHeight: '1.4' }"
-                >
-                  Over 300 virtual hacking labs. Training that is hands-on,
-                  self-paced, gamified.
+                <p class="text-blue-grey-4" :style="{ maxWidth: '300px', lineHeight: '1.4' }">
+                  Over 300 virtual hacking labs. Training that is hands-on, self-paced, gamified.
                 </p>
               </div>
             </div>
@@ -87,12 +74,8 @@
               </q-avatar>
               <div class="invite-message">
                 <p class="text-weight-bold">Land Your Dream Job</p>
-                <p
-                  class="text-blue-grey-4"
-                  :style="{ maxWidth: '300px', lineHeight: '1.4' }"
-                >
-                  Advance your skills and join our Careers section to find your
-                  next dream job.
+                <p class="text-blue-grey-4" :style="{ maxWidth: '300px', lineHeight: '1.4' }">
+                  Advance your skills and join our Careers section to find your next dream job.
                 </p>
               </div>
             </div>
@@ -127,17 +110,10 @@
     <div class="col row items-center">
       <transition appear enter-active-class="animated fadeInRight">
         <q-form class="login-form" @submit="joinUserRequest">
-          <q-card
-            dark
-            flat
-            class="bg-grey-10 q-pa-lg"
-            :style="{ minWidth: '400px' }"
-          >
+          <q-card dark flat class="q-pa-lg" :style="{ minWidth: '400px' }">
             <q-card-section>
               <p class="text-h6 q-mb-none">Create Your Account.</p>
-              <p class="text-h6 text-light-green-12">
-                Join Thousands Of Hackers
-              </p>
+              <p class="text-h6 text-light-green-12">Join Thousands Of Hackers</p>
             </q-card-section>
 
             <q-card-section class="q-gutter-y-md">
@@ -153,24 +129,15 @@
                 outlined
                 v-model="registerRequest.nickname"
                 label="Nickname"
-                :rules="[
-                  nickname =>
-                    nicknameValidMethod(nickname) || 'Nickname is required'
-                ]"
+                :rules="[nickname => nicknameValidMethod(nickname) || 'Nickname is required']"
                 lazy-rules
               >
                 <template #append>
-                  <q-icon
-                    color="light-green-12"
-                    :name="nicknameValidStatus ? 'check' : ''"
-                  />
+                  <q-icon color="light-green-12" :name="nicknameValidStatus ? 'check' : ''" />
                 </template>
               </q-input>
 
-              <div
-                class="row justify-center items-center no-wrap q-gutter-x-md"
-                :style="{ width: '400px' }"
-              >
+              <div class="row justify-center items-center no-wrap q-gutter-x-md" :style="{ width: '400px' }">
                 <q-input
                   no-error-icon
                   filled
@@ -184,17 +151,12 @@
                   outlined
                   v-model="registerRequest.email"
                   label="Email"
-                  :rules="[
-                    email => emailValidMethod(email) || 'Email is required'
-                  ]"
+                  :rules="[email => emailValidMethod(email) || 'Email is required']"
                   lazy-rules
                   class="col-7"
                 >
                   <template #append>
-                    <q-icon
-                      color="light-green-12"
-                      :name="emailValidStatus ? 'check' : ''"
-                    />
+                    <q-icon color="light-green-12" :name="emailValidStatus ? 'check' : ''" />
                   </template>
                   <template #after>
                     <q-btn
@@ -249,10 +211,7 @@
                 outlined
                 v-model="registerRequest.password"
                 label="Password"
-                :rules="[
-                  password =>
-                    passwordValidMethod(password) || 'Password is required'
-                ]"
+                :rules="[password => passwordValidMethod(password) || 'Password is required']"
                 lazy-rules
               >
                 <template #append>
@@ -284,17 +243,11 @@
                 outlined
                 v-model="confirmPassword"
                 label="Confirm Password"
-                :rules="[
-                  password =>
-                    confirmPasswordMethod(password) || 'Password Incorrect'
-                ]"
+                :rules="[password => confirmPasswordMethod(password) || 'Password Incorrect']"
                 lazy-rules
               >
                 <template #append>
-                  <q-icon
-                    color="light-green-12"
-                    :name="confirmPasswordStatus ? 'check' : ''"
-                  />
+                  <q-icon color="light-green-12" :name="confirmPasswordStatus ? 'check' : ''" />
                 </template>
               </q-input>
             </q-card-section>
@@ -348,10 +301,7 @@ const isPwd = ref(true);
 const confirmPassword = ref('');
 const confirmPasswordStatus = ref(false);
 const confirmPasswordMethod = password => {
-  if (
-    confirmPassword.value.length === 0 ||
-    registerRequest.value.password !== password
-  ) {
+  if (confirmPassword.value.length === 0 || registerRequest.value.password !== password) {
     confirmPasswordStatus.value = false;
     return false;
   }

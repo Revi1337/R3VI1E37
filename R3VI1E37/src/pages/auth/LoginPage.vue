@@ -2,9 +2,9 @@
   <div class="flex justify-center items-center fullscreen">
     <q-form @submit.prevent="userLoginRequest">
       <q-card
-        flat
         dark
-        class="border-light-green bg-grey-10 text-light-green-12 q-pa-lg column justify-between"
+        flat
+        class="border-light-green text-light-green-12 q-pa-lg column justify-between"
         :style="{ minWidth: '500px', minHeight: '500px' }"
       >
         <q-card-section>
@@ -49,40 +49,20 @@
           </q-input>
 
           <div class="row justify-between items-center">
-            <q-checkbox
-              keep-color
-              v-model="teal"
-              label="Remember Me"
-              color="light-green-12"
-            />
-            <router-link to="/forgot" class="underline text-white">
-              Forgot Your Password?
-            </router-link>
+            <q-checkbox keep-color v-model="teal" label="Remember Me" color="light-green-12" />
+            <router-link to="/forgot" class="underline text-white"> Forgot Your Password? </router-link>
           </div>
         </q-card-section>
 
         <q-card-section class="q-gutter-y-lg">
           <div class="row">
-            <q-btn
-              type="submit"
-              class="col"
-              :ripple="false"
-              outline
-              label="login"
-              color="light-green-12"
-            />
+            <q-btn type="submit" class="col" :ripple="false" outline label="login" color="light-green-12" />
           </div>
 
           <q-separator dark inset />
 
           <div class="row">
-            <q-btn
-              class="col"
-              :ripple="false"
-              outline
-              color="green-12"
-              href="/api/oauth2/google"
-            >
+            <q-btn class="col" :ripple="false" outline color="green-12" href="/api/oauth2/google">
               <div class="row items-center" :style="{ minWidth: '200px' }">
                 <q-icon size="16px" name="fa-brands fa-google" class="col-1" />
                 <div class="col">sign in google</div>
@@ -91,13 +71,7 @@
           </div>
 
           <div class="row">
-            <q-btn
-              class="col"
-              :ripple="false"
-              outline
-              color="green-12"
-              href="/api/oauth2/github"
-            >
+            <q-btn class="col" :ripple="false" outline color="green-12" href="/api/oauth2/github">
               <div class="row items-center" :style="{ minWidth: '200px' }">
                 <q-icon size="16px" name="fa-brands fa-github" class="col-1" />
                 <div class="col">sign in github</div>
@@ -106,32 +80,16 @@
           </div>
 
           <div class="row">
-            <q-btn
-              class="col"
-              :ripple="false"
-              outline
-              color="green-12"
-              href="/api/oauth2/facebook"
-            >
+            <q-btn class="col" :ripple="false" outline color="green-12" href="/api/oauth2/facebook">
               <div class="row items-center" :style="{ minWidth: '200px' }">
-                <q-icon
-                  size="16px"
-                  name="fa-brands fa-facebook"
-                  class="col-1"
-                />
+                <q-icon size="16px" name="fa-brands fa-facebook" class="col-1" />
                 <div class="col">sign in facebook</div>
               </div>
             </q-btn>
           </div>
 
           <div class="row">
-            <q-btn
-              class="col"
-              :ripple="false"
-              outline
-              color="green-12"
-              href="/api/oauth2/naver"
-            >
+            <q-btn class="col" :ripple="false" outline color="green-12" href="/api/oauth2/naver">
               <div class="row items-center" :style="{ minWidth: '200px' }">
                 <q-icon size="16px" name="img:/naver.svg" class="col-1" />
                 <div class="col">sign in naver</div>
@@ -140,13 +98,7 @@
           </div>
 
           <div class="row">
-            <q-btn
-              class="col"
-              :ripple="false"
-              outline
-              color="green-12"
-              href="/api/oauth2/kakao"
-            >
+            <q-btn class="col" :ripple="false" outline color="green-12" href="/api/oauth2/kakao">
               <div class="row items-center" :style="{ minWidth: '200px' }">
                 <q-icon size="16px" name="img:/kakaotalk.svg" class="col-1" />
                 <div class="col">sign in kakao</div>
@@ -174,6 +126,15 @@
 <script setup>
 import { ref } from 'vue';
 import { userLogin } from 'src/api/auth';
+import { useAuthStore } from 'stores/auth-store';
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+
+// routing
+const router = useRouter();
+
+// use authStore
+const { accessToken } = storeToRefs(useAuthStore());
 
 // User Login
 const userLoginData = ref({
@@ -186,9 +147,10 @@ const userLoginRequest = async () => {
       email: userLoginData.value.email,
       password: userLoginData.value.password
     };
-    const { headers } = await userLogin(jsonData);
+    const { status, headers, request } = await userLogin(jsonData);
     const authHeader = headers['authorization'];
-    console.log(authHeader);
+    accessToken.value = authHeader.split('Bearer ')[1];
+    router.push({ name: 'Index' });
   } catch (error) {
     console.error(error);
   }
@@ -221,5 +183,3 @@ const isPwd = ref(true);
   width: 100%;
 }
 </style>
-
-<style lang="scss" scoped></style>

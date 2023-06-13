@@ -14,34 +14,38 @@ const routes = [
         component: () => import('pages/IndexPage.vue')
       },
       {
-        path: 'web',
-        name: 'Web',
-        component: () => import('pages/WebPage.vue')
-      },
-      {
-        path: 'hacking',
-        name: 'Hacking',
-        component: () => import('pages/HackingPage.vue')
-      },
-      {
-        path: 'pentest',
-        name: 'Pentest',
-        component: () => import('pages/PentestPage.vue')
-      },
-      {
-        path: 'cs',
-        name: 'CS',
-        component: () => import('pages/ComputerSciencePage.vue')
-      },
-      {
-        path: 'cheet',
-        name: 'Cheet',
-        component: () => import('pages/CheetSheetPage.vue')
-      },
-      {
         path: 'post',
         name: 'Post',
-        component: () => import('pages/post/CreatePostPage.vue')
+        children: [
+          {
+            path: 'create',
+            name: 'CreatePost',
+            component: () => import('pages/post/CreatePostPage.vue'),
+            meta: {
+              layoutPadding: 20
+            }
+          },
+          {
+            path: ':category',
+            name: 'CategoryPost',
+            component: () => import('pages/PostCategoryPage.vue'),
+            props: true,
+            beforeEnter: ({ params }) => {
+              if (
+                Object.keys(params).length === 0 ||
+                !['dev', 'ctf', 'writeup', 'cs', 'cheetsheet'].includes(params.category)
+              )
+                return { name: 'CategoryPost', params: { category: 'dev' } };
+              console.log(params);
+            }
+          }
+        ]
+      },
+      {
+        path: 'posts/:id',
+        name: 'PostDetails',
+        component: () => import('pages/post/PostDetails.vue'),
+        props: true
       }
     ]
   },
@@ -77,5 +81,4 @@ const routes = [
     component: () => import('pages/ErrorNotFound.vue')
   }
 ];
-
 export default routes;

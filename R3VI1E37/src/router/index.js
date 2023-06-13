@@ -20,9 +20,7 @@ export default route(function (/* { store, ssrContext } */) {
     scrollBehavior: () => ({ left: 0, top: 0 }),
     routes,
 
-    history: createHistory(
-      process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE
-    )
+    history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE)
   });
 
   router.beforeEach(() => LoadingBar.start());

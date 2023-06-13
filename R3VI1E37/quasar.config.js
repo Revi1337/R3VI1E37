@@ -5,7 +5,7 @@ const { configure } = require('quasar/wrappers');
 module.exports = configure(function (ctx) {
   return {
     supportTS: false,
-    boot: ['axios', 'loading', 'particles'],
+    boot: ['axios', 'loading', 'particles', 'vmdeditor'],
     css: ['app.scss'],
     extras: [
       'fontawesome-v6',
@@ -21,9 +21,7 @@ module.exports = configure(function (ctx) {
       vueRouterMode: 'history',
       distDir: '../src/main/resources/static',
       chainWebpack(chain) {
-        chain
-          .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }]);
+        chain.plugin('eslint-webpack-plugin').use(ESLintPlugin, [{ extensions: ['js', 'vue'] }]);
       }
     },
 
@@ -45,7 +43,7 @@ module.exports = configure(function (ctx) {
     framework: {
       config: {},
       // lang: 'en-US', // Quasar language pack
-      plugins: ['LoadingBar']
+      plugins: ['LocalStorage']
     },
 
     animations: 'all',
@@ -58,9 +56,7 @@ module.exports = configure(function (ctx) {
       maxAge: 1000 * 60 * 60 * 24 * 30,
 
       chainWebpackWebserver(chain) {
-        chain
-          .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }]);
+        chain.plugin('eslint-webpack-plugin').use(ESLintPlugin, [{ extensions: ['js'] }]);
       },
 
       middlewares: [ctx.prod ? 'compression' : '', 'render']
@@ -71,9 +67,7 @@ module.exports = configure(function (ctx) {
       workboxOptions: {},
 
       chainWebpackCustomSW(chain) {
-        chain
-          .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }]);
+        chain.plugin('eslint-webpack-plugin').use(ESLintPlugin, [{ extensions: ['js'] }]);
       },
 
       manifest: {
@@ -130,15 +124,11 @@ module.exports = configure(function (ctx) {
       },
 
       chainWebpackMain(chain) {
-        chain
-          .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }]);
+        chain.plugin('eslint-webpack-plugin').use(ESLintPlugin, [{ extensions: ['js'] }]);
       },
 
       chainWebpackPreload(chain) {
-        chain
-          .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }]);
+        chain.plugin('eslint-webpack-plugin').use(ESLintPlugin, [{ extensions: ['js'] }]);
       }
     }
   };

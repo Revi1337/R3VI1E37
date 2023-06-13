@@ -72,7 +72,7 @@
           }
         }, // 여까지가 particles 끝
         background: {
-          color: $dark
+          color: '#22272e'
         },
         fullScreen: {
           zIndex: -1

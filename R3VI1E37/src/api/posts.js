@@ -1,16 +1,48 @@
 import axios from 'axios';
+import { useAuthStore } from 'src/stores/auth-store';
+import { storeToRefs } from 'pinia';
 
-export async function findAllPost() {
+const { accessToken } = storeToRefs(useAuthStore());
+
+export function findAllPost() {
   return axios.get('/api/posts');
 }
 
-export async function createPost(jsonData, dummy) {
-  const formData = new FormData();
-  formData.append('file', dummy);
-  formData.append('request', jsonData);
-  const headers = {
-    'Content-Type': 'multipart/form-data; application/json',
-    Authorization: 'test1@.com'
-  };
-  return axios.post('/api/posts', formData, headers);
+export function findById(id) {
+  return axios.get(`/api/post/${id}`);
+}
+
+export function createPost(jsonData) {
+  return axios.post(
+    '/api/posts',
+    {
+      ...jsonData
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken.value}`
+      }
+    }
+  );
+}
+
+// post
+export function findPostByCategory(category) {
+  return axios.get(`/api/posts`, {
+    params: {
+      category: category
+    }
+  });
+}
+
+// export function findPostByCondition(params) {
+//   return axios.get(`/api/posts`, { params });
+// }
+
+export function findPostByContainingString(params) {
+  return axios.get(`/api/posts`, { params });
+}
+
+export function findPostById(id) {
+  return axios.get(`/api/post/${id}`);
 }
