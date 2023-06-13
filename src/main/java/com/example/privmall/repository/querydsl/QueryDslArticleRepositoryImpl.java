@@ -26,8 +26,10 @@ public class QueryDslArticleRepositoryImpl implements QueryDslArticleRepository 
                         categoryEq(searchTypeCondition.category()),
                         titleEq(searchTypeCondition.title()),
                         createdByEq(searchTypeCondition.createdBy()),
-                        titleContainsIgnoreCase(searchTypeCondition.title()),
-                        contentContainsIgnoreCase(searchTypeCondition.content()))
+                        hashtagEq(searchTypeCondition.hashtag()),
+                        titleContainsIgnoreCase(searchTypeCondition.title_contains()),
+                        contentContainsIgnoreCase(searchTypeCondition.content_contains())
+                )
                 .offset(searchCondition.getOffset())
                 .limit(searchCondition.size())
                 .fetch();
@@ -43,6 +45,10 @@ public class QueryDslArticleRepositoryImpl implements QueryDslArticleRepository 
 
     private BooleanExpression createdByEq(String createdBy) {
         return StringUtils.hasText(createdBy) ? article.createdBy.eq(createdBy) : null;
+    }
+
+    private BooleanExpression hashtagEq(String hashtag) {
+        return StringUtils.hasText(hashtag) ? article.hashtag.eq(hashtag) : null;
     }
 
     private BooleanExpression titleContainsIgnoreCase(String title) {
