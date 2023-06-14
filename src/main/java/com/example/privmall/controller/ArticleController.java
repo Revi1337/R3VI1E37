@@ -9,13 +9,21 @@ import com.example.privmall.service.ArticleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 
 
@@ -54,5 +62,36 @@ public class ArticleController {
                 .status(HttpStatus.OK)
                 .body(articleResponse);
     }
+
+    @PostMapping(path = "/api/post/image")        // TODO 인증된 사용자만 요청할수있도록 변경 필요
+    public ResponseEntity<String> uploadPostImage(@RequestParam(name = "file") MultipartFile multipartFile) throws IOException {
+        String storedFileName = articleService.savePostImage(multipartFile);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(storedFileName);
+    }
+
+    @GetMapping("/api/post/image/{filename}")
+    public ResponseEntity<Resource> showUploadedFile(@PathVariable(name = "filename") String filename) throws  MalformedURLException {
+        FileSystemResource resource = new FileSystemResource(
+                "D:\\SpringProject\\uploaddir\\" + filename + ".png");
+        if (resource.exists() && resource.isReadable()) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(resource);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+//    @GetMapping(path = "/api/post/image/{image_uuid}")
+//    public ResponseEntity<Resource> requestPostImage(@PathVariable(name = "image_uuid") String uuid) {
+//        byte[] fileBinaryData = articleService.requestPostImage(uuid);
+//        return ResponseEntity.ok()
+//                .contentType(MediaType.IMAGE_PNG)
+//                .header(HttpHeaders.CONTENT_DISPOSITION,
+//                        "attachment; filename=\"" + uuid + ".png")
+//                .body(new ByteArrayResource(fileBinaryData));
+//    }
 
 }
