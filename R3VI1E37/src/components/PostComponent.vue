@@ -124,27 +124,28 @@ const getBadgeColor = computed({
   }
 });
 
+// 0 0 5px #42b883, 0 0 15px #42b883, 0 0 30px #42b883, 0 0 65px #42b883
 const getBoxShadowColor = computed({
   get: () => {
     if (isHovered.value) {
       if (props.hashtag === 'Spring') {
-        return '0 0 5px #6cb52d, 0 0 15px #6cb52d, 0 0 30px #6cb52d, 0 0 65px #6cb52d';
+        return '0 0 3px #6cb52d, 0 0 11px #6cb52d, 0 0 25px #6cb52d, 0 0 45px #6cb52d';
       } else if (props.hashtag === 'Vue') {
-        return '0 0 5px #42b883, 0 0 15px #42b883, 0 0 30px #42b883, 0 0 65px #42b883';
+        return '0 0 3px #42b883, 0 0 11px #42b883, 0 0 25px #42b883, 0 0 45px #42b883';
       } else if (props.hashtag === 'Python') {
-        return '0 0 5px #3d7daf, 0 0 15px #3d7daf, 0 0 30px #3d7daf, 0 0 65px #3d7daf';
+        return '0 0 3px #3d7daf, 0 0 11px #3d7daf, 0 0 25px #3d7daf, 0 0 45px #3d7daf';
       } else if (props.hashtag === 'Bash') {
-        return '0 0 5px #fefefe, 0 0 15px #fefefe, 0 0 30px #fefefe, 0 0 65px #fefefe';
+        return '0 0 3px #fefefe, 0 0 11px #fefefe, 0 0 25px #fefefe, 0 0 45px #fefefe';
       } else if (props.hashtag === 'Java') {
-        return '0 0 5px #b07219, 0 0 15px #b07219, 0 0 30px #b07219, 0 0 65px #b07219';
+        return '0 0 3px #b07219, 0 0 11px #b07219, 0 0 25px #b07219, 0 0 45px #b07219';
       } else if (props.hashtag === 'JavaScript') {
-        return '0 0 5px #f1e05a, 0 0 15px #f1e05a, 0 0 30px #f1e05a, 0 0 65px #f1e05a';
+        return '0 0 3px #f1e05a, 0 0 11px #f1e05a, 0 0 25px #f1e05a, 0 0 45px #f1e05a';
       } else if (props.hashtag === 'Quasar') {
-        return '0 0 5px #00b4ff, 0 0 15px #00b4ff, 0 0 30px #00b4ff, 0 0 65px #00b4ff';
+        return '0 0 3px #00b4ff, 0 0 11px #00b4ff, 0 0 25px #00b4ff, 0 0 45px #00b4ff';
       } else if (props.hashtag === 'HackTheBox') {
-        return '0 0 5px #9fef00, 0 0 15px #9fef00, 0 0 30px #9fef00, 0 0 65px #9fef00';
+        return '0 0 3px #9fef00, 0 0 11px #9fef00, 0 0 25px #9fef00, 0 0 45px #9fef00';
       } else if (props.hashtag === 'TryHackMe') {
-        return '0 0 5px #ff0000, 0 0 15px #ff0000, 0 0 30px #ff0000, 0 0 65px #ff0000';
+        return '0 0 3px #ff0000, 0 0 11px #ff0000, 0 0 25px #ff0000, 0 0 45px #ff0000';
       } else return 'none';
     } else {
       return 'none';
@@ -186,7 +187,7 @@ span {
 }
 
 .article-container {
-  margin: 20px 0 20px 0;
+  margin: 20px 5px 20px 5px;
   min-height: 110px;
   border: 1px solid $font-color;
   border-radius: 7px;
