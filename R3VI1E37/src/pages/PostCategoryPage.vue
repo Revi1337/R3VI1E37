@@ -14,7 +14,7 @@
       </template>
     </q-input>
 
-    <section class="col-12">
+    <section class="col-12 scroll" :style="{ width: '100vw', height: '700px', padding: '40px' }">
       <template v-for="(post, index) in posts" :key="index">
         <PostComponent
           :id="post.id"

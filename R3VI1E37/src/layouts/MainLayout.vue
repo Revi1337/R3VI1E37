@@ -1,4 +1,5 @@
 <template>
+  <!-- 여기 Page 마다 동적인 Padding 갖을 수있게 바인딩 -->
   <q-layout :style="{ padding: `0 ${layoutPadding}px !important` }">
     <q-header class="row justify-between no-wrap">
       <svg
@@ -22,13 +23,6 @@
       </svg>
 
       <div class="col-shrink text-right">
-        <!-- <q-tabs outside-arrows dense v-model="tab" align="justify">
-          <q-route-tab :ripple="false" name="dev" label="DEV" :to="{ name: 'DevPost' }" exact />
-          <q-route-tab :ripple="false" name="ctf" label="CTF" :to="{ name: 'CtfPost' }" exact />
-          <q-route-tab :ripple="false" name="writeup" label="WRITE UP" :to="{ name: 'WriteupPost' }" exact />
-          <q-route-tab :ripple="false" name="cs" label="Computer Science" :to="{ name: 'CSPost' }" exact />
-          <q-route-tab name="cheet_sheet" label="Cheet Sheet" :to="{ name: 'CheetPost' }" exact />
-        </q-tabs> -->
         <q-tabs outside-arrows dense v-model="tab" align="justify">
           <q-route-tab
             :ripple="false"
