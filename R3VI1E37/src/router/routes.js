@@ -45,7 +45,10 @@ const routes = [
         path: 'posts/:id',
         name: 'PostDetails',
         component: () => import('pages/post/PostDetails.vue'),
-        props: true
+        props: true,
+        meta: {
+          layoutPadding: 470
+        }
       }
     ]
   },

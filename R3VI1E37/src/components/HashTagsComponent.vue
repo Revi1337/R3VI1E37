@@ -49,12 +49,21 @@ function countHashtagOccurrences(array) {
   for (let i = 0; i < array.length; i++) {
     let obj = array[i];
     if (obj.hasOwnProperty('hashtag')) {
-      let hashtag = obj.hashtag;
-      if (hashtagCounts[hashtag]) {
-        hashtagCounts[hashtag]++;
-      } else {
-        hashtagCounts[hashtag] = 1;
-      }
+      obj.hashtag.forEach(tag => {
+        // console.log(tag);
+        let hashtag = tag;
+        if (hashtagCounts[hashtag]) {
+          hashtagCounts[hashtag]++;
+        } else {
+          hashtagCounts[hashtag] = 1;
+        }
+      });
+      // let hashtag = obj.hashtag;
+      // if (hashtagCounts[hashtag]) {
+      //   hashtagCounts[hashtag]++;
+      // } else {
+      //   hashtagCounts[hashtag] = 1;
+      // }
     }
   }
 
@@ -67,5 +76,3 @@ function countHashtagOccurrences(array) {
   return result;
 }
 </script>
-
-<style lang="scss" scoped></style>

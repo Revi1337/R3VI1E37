@@ -1,12 +1,12 @@
 <template>
-  <div class="q-mt-xl mark-down col">
+  <div class="q-mt-xl mark-down" :style="{ oveflow: 'hidden' }">
     <p class="q-mb-lg text-h3 text-weight-bold">{{ articleData.title }}</p>
 
     <div>
       <q-separator dark spaced />
     </div>
 
-    <div class="markdown-container" v-html="markdownToHtml"></div>
+    <div class="markdown-container q-mt-xl" v-html="markdownToHtml"></div>
   </div>
 
   <q-page-sticky position="top-right" :offset="[42, 140]" class="summary row">
@@ -48,13 +48,12 @@ const articleId = parseInt(props.id);
 
 // Article Data
 const articleData = ref({
-  id: null,
-  title: null,
-  content: 'whoami'
+  id: '',
+  title: '',
+  content: ''
 });
 const findPostByIdRequest = async articleId => {
   try {
-    // console.log('findPostByIdRequest()');
     const { data } = await findPostById(articleId);
     const { id, title, content } = data;
     articleData.value.id = id;

@@ -9,7 +9,7 @@
           dark
           label="Category"
           label-color="light-green-12"
-          v-model="model"
+          v-model="createPostData.category"
           use-input
           hide-selected
           fill-input
@@ -32,7 +32,7 @@
           dark
           label="HashTags"
           label-color="light-green-12"
-          v-model="model2"
+          v-model="createPostData.hashTag"
           use-input
           use-chips
           multiple
@@ -155,9 +155,9 @@ const createPostData = ref({
   content: `
   * Dummy
   `,
-  hashtag: 'dummyTag'
+  hashTag: null,
+  category: ''
 });
-
 const createPostDialog = ref(false);
 const createPostRequest = async () => {
   createPostDialog.value = false;
@@ -165,14 +165,19 @@ const createPostRequest = async () => {
     const jsonData = {
       title: createPostData.value.title,
       content: createPostData.value.content,
-      hashtag: createPostData.value.hashtag
+      hashTag: iterStringHashTag(),
+      category: createPostData.value.category
     };
+    // console.log(jsonData);
     const { data } = await createPost(jsonData);
     router.push({ name: 'Index' });
   } catch (error) {
     console.error(error);
     alert('error');
   }
+};
+const iterStringHashTag = () => {
+  return Array.from(createPostData.value.hashTag).join(',');
 };
 
 // MarkDown

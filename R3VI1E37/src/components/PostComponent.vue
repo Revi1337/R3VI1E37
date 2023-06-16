@@ -1,29 +1,49 @@
 <template>
   <article
-    class="article-container"
+    class="cursor-pointer"
     :class="{ hovered: isHovered }"
-    :style="{ boxShadow: getBoxShadowColor }"
+    :style="{ boxShadow: getBoxShadowColor, minHeight: '100px', padding: '15px' }"
     @click="goPostDetails()"
     @mouseenter="slideSwitch()"
     @mouseleave="slideSwitch()"
   >
-    <div class="article-items">
-      <q-avatar size="4rem">
-        <q-img width="48px" :src="getSvgLink" />
-      </q-avatar>
-    </div>
+    <div class="row q-gutter-lg">
+      <div>
+        <div class="flex flex-center">
+          <q-avatar size="64px">
+            <q-img width="48px" :src="getSvgLink" />
+          </q-avatar>
+        </div>
+        <span class="text-center">
+          <q-badge rounded outline :color="calcColor(props.hashtag[0])" :label="props.hashtag[0]" />
+        </span>
+      </div>
 
-    <div class="article-items article-content">
-      <span class="title">{{ title }}</span>
-      <span class="content">{{ getContent }} </span>
-    </div>
+      <div class="col">
+        <div
+          class="row items-center no-wrap"
+          :style="{ height: props.hashtag.slice(1).length > 0 ? '64px' : '100%' }"
+        >
+          <span class="title">{{ title }}</span>
+        </div>
+        <div class="row q-gutter-sm">
+          <span v-for="tag in props.hashtag.slice(1)" :key="tag">
+            <q-badge rounded outline :color="calcColor(tag)" :label="tag" />
+          </span>
+        </div>
+      </div>
 
-    <div class="article-items article-info">
-      <span>
-        <q-badge rounded outline :color="getBadgeColor" :label="hashtag" />
-      </span>
-      <span>Created : {{ formattedDateTime }}</span>
-      <span>createdBy : {{ createdBy }}</span>
+      <div class="col-3">
+        <div class="row no-wrap items-center">
+          <span class="text-overline text-red">{{ category.toUpperCase() }}</span>
+          <span class="text-bold">&nbsp;·&nbsp;</span>
+          <span class="text-caption">3 min read</span>
+        </div>
+        <div>
+          <span>Created : {{ formattedDateTime }}</span>
+          <span>Written By : {{ createdBy }}</span>
+        </div>
+      </div>
     </div>
   </article>
 
@@ -33,6 +53,14 @@
     </div>
   </Transition>
 </template>
+
+<!-- <span class="text-center">
+  <q-badge rounded outline :color="calcColor(props.hashtag[0])" :label="props.hashtag[0]" />
+</span> -->
+
+<!-- <span v-for="tag in props.hashtag.slice(1)" :key="tag">
+  <q-badge rounded outline :color="calcColor(tag)" :label="tag" />
+</span> -->
 
 <script setup>
 import { useRouter } from 'vue-router';
@@ -59,7 +87,7 @@ const props = defineProps({
     required: true
   },
   hashtag: {
-    type: String,
+    type: Array[String],
     required: true
   },
   createdAt: {
@@ -69,15 +97,18 @@ const props = defineProps({
   createdBy: {
     type: String,
     required: true
+  },
+  category: {
+    type: String,
+    required: true
   }
 });
 
+// console.log(props.hashtag[0]);
+
 // GotoPostDetails
 const router = useRouter();
-const goPostDetails = () => {
-  router.push({ name: 'PostDetails', params: { id: props.id } });
-  // router.push({ name: 'Index' });
-};
+const goPostDetails = () => router.push({ name: 'PostDetails', params: { id: props.id } });
 
 // Parsing Datetime
 const date = new Date(props.createdAt);
@@ -94,57 +125,56 @@ const getContent = computed({
 });
 const getSvgLink = computed({
   get: () => {
-    if (props.hashtag === 'Spring') return 'https://www.vectorlogo.zone/logos/springio/springio-icon.svg';
-    else if (props.hashtag === 'Vue') return 'https://www.vectorlogo.zone/logos/vuejs/vuejs-icon.svg';
-    else if (props.hashtag === 'Python')
+    if (props.hashtag[0] === 'Spring') return 'https://www.vectorlogo.zone/logos/springio/springio-icon.svg';
+    else if (props.hashtag[0] === 'Vue') return 'https://www.vectorlogo.zone/logos/vuejs/vuejs-icon.svg';
+    else if (props.hashtag[0] === 'Python')
       return 'https://upload.wikimedia.org/wikipedia/commons/archive/c/c3/20220821155028%21Python-logo-notext.svg';
-    else if (props.hashtag === 'Bash')
+    else if (props.hashtag[0] === 'Bash')
       return 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Bash_Logo_Colored.svg';
-    else if (props.hashtag === 'Java') return 'https://www.vectorlogo.zone/logos/java/java-icon.svg';
-    else if (props.hashtag === 'JavaScript')
+    else if (props.hashtag[0] === 'Java') return 'https://www.vectorlogo.zone/logos/java/java-icon.svg';
+    else if (props.hashtag[0] === 'JavaScript')
       return 'https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg';
-    else if (props.hashtag === 'Quasar') return 'https://cdn.quasar.dev/logo-v2/svg/logo-dark.svg';
-    else if (props.hashtag === 'HackTheBox') return 'HackTheBox.svg';
-    else if (props.hashtag === 'TryHackMe') return 'TryHackMe.svg';
+    else if (props.hashtag[0] === 'Quasar') return 'https://cdn.quasar.dev/logo-v2/svg/logo-dark.svg';
+    else if (props.hashtag[0] === 'HackTheBox') return 'HackTheBox.svg';
+    else if (props.hashtag[0] === 'TryHackMe') return 'TryHackMe.svg';
     else return 'Unknown';
   }
 });
-const getBadgeColor = computed({
-  get: () => {
-    if (props.hashtag === 'Spring') return 'Spring';
-    else if (props.hashtag === 'Vue') return 'Vue';
-    else if (props.hashtag === 'Python') return 'Python';
-    else if (props.hashtag === 'Bash') return 'Bash';
-    else if (props.hashtag === 'Java') return 'Java';
-    else if (props.hashtag === 'JavaScript') return 'JavaScript';
-    else if (props.hashtag === 'Quasar') return 'Quasar';
-    else if (props.hashtag === 'HackTheBox') return 'HackTheBox';
-    else if (props.hashtag === 'TryHackMe') return 'TryHackMe';
-    else return 'Unknown';
-  }
-});
+
+const calcColor = tags => {
+  if (tags === 'Spring') return 'Spring';
+  else if (tags === 'Vue') return 'Vue';
+  else if (tags === 'Python') return 'Python';
+  else if (tags === 'Bash') return 'Bash';
+  else if (tags === 'Java') return 'Java';
+  else if (tags === 'JavaScript') return 'JavaScript';
+  else if (tags === 'Quasar') return 'Quasar';
+  else if (tags === 'HackTheBox') return 'HackTheBox';
+  else if (tags === 'TryHackMe') return 'TryHackMe';
+  else return 'Unknown';
+};
 
 // 0 0 5px #42b883, 0 0 15px #42b883, 0 0 30px #42b883, 0 0 65px #42b883
 const getBoxShadowColor = computed({
   get: () => {
     if (isHovered.value) {
-      if (props.hashtag === 'Spring') {
+      if (props.hashtag[0] === 'Spring') {
         return '0 0 3px #6cb52d, 0 0 11px #6cb52d, 0 0 25px #6cb52d, 0 0 45px #6cb52d';
-      } else if (props.hashtag === 'Vue') {
+      } else if (props.hashtag[0] === 'Vue') {
         return '0 0 3px #42b883, 0 0 11px #42b883, 0 0 25px #42b883, 0 0 45px #42b883';
-      } else if (props.hashtag === 'Python') {
+      } else if (props.hashtag[0] === 'Python') {
         return '0 0 3px #3d7daf, 0 0 11px #3d7daf, 0 0 25px #3d7daf, 0 0 45px #3d7daf';
-      } else if (props.hashtag === 'Bash') {
+      } else if (props.hashtag[0] === 'Bash') {
         return '0 0 3px #fefefe, 0 0 11px #fefefe, 0 0 25px #fefefe, 0 0 45px #fefefe';
-      } else if (props.hashtag === 'Java') {
+      } else if (props.hashtag[0] === 'Java') {
         return '0 0 3px #b07219, 0 0 11px #b07219, 0 0 25px #b07219, 0 0 45px #b07219';
-      } else if (props.hashtag === 'JavaScript') {
+      } else if (props.hashtag[0] === 'JavaScript') {
         return '0 0 3px #f1e05a, 0 0 11px #f1e05a, 0 0 25px #f1e05a, 0 0 45px #f1e05a';
-      } else if (props.hashtag === 'Quasar') {
+      } else if (props.hashtag[0] === 'Quasar') {
         return '0 0 3px #00b4ff, 0 0 11px #00b4ff, 0 0 25px #00b4ff, 0 0 45px #00b4ff';
-      } else if (props.hashtag === 'HackTheBox') {
+      } else if (props.hashtag[0] === 'HackTheBox') {
         return '0 0 3px #9fef00, 0 0 11px #9fef00, 0 0 25px #9fef00, 0 0 45px #9fef00';
-      } else if (props.hashtag === 'TryHackMe') {
+      } else if (props.hashtag[0] === 'TryHackMe') {
         return '0 0 3px #ff0000, 0 0 11px #ff0000, 0 0 25px #ff0000, 0 0 45px #ff0000';
       } else return 'none';
     } else {
@@ -186,43 +216,6 @@ span {
   display: block;
 }
 
-.article-container {
-  margin: 20px 5px 20px 5px;
-  min-height: 110px;
-  border: 1px solid $font-color;
-  border-radius: 7px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    box-shadow: var(--box-shadow-color);
-  }
-
-  .article-items {
-    margin: 0 20px 0;
-  }
-
-  .article-content {
-    flex-grow: 1;
-    .title {
-      font-size: 22px;
-      font-weight: 900;
-    }
-    .content {
-      max-width: 400px;
-      letter-spacing: 1px;
-    }
-  }
-
-  .article-info {
-    width: 250px;
-    line-height: 30px;
-  }
-}
-
 .articleSlider-enter-from {
   opacity: 0;
 }
@@ -231,5 +224,21 @@ span {
 }
 .articleSlider-enter-to {
   opacity: 1;
+}
+
+article {
+  border: 1px solid $font-color;
+  border-radius: 7px;
+  margin: 20px 5px 20px 5px;
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 900;
 }
 </style>

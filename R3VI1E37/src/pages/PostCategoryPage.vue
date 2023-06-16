@@ -23,6 +23,7 @@
           :hashtag="post.hashtag"
           :created-at="post.createdAt"
           :created-by="post.createdBy"
+          :category="post.category"
         >
           <template #slide>
             <SummaryComponent :content="post" />
@@ -59,7 +60,7 @@ const hashTagNavigation = ref([]);
 const postRequestParams = ref({
   title_contains: null,
   category: CATEGORY,
-  hashtag: null,
+  hashtag_contains: null,
   size: 100
 });
 const findPostByCategoryRequest = async params => {
@@ -79,6 +80,6 @@ watchEffect(() => {
 // ClickHashTag
 const clickHashTag = hashtag => {
   if (hashtag.length === 0) postRequestParams.value.title_contains = null;
-  postRequestParams.value.hashtag = hashtag;
+  postRequestParams.value.hashtag_contains = hashtag;
 };
 </script>
