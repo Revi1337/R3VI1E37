@@ -23,32 +23,33 @@ public class QueryDslArticleRepositoryImpl implements QueryDslArticleRepository 
         return jpaQueryFactory
                 .selectFrom(article)
                 .where(
-                        categoryEq(searchTypeCondition.category()),
-                        titleEq(searchTypeCondition.title()),
+                        categoryEqIgnoreCase(searchTypeCondition.category()),
+                        titleEqIgnoreCase(searchTypeCondition.title()),
                         createdByEq(searchTypeCondition.createdBy()),
-                        hashtagEq(searchTypeCondition.hashtag()),
+                        hashtagEqIgnoreCase(searchTypeCondition.hashtag()),
                         titleContainsIgnoreCase(searchTypeCondition.title_contains()),
-                        contentContainsIgnoreCase(searchTypeCondition.content_contains())
+                        contentContainsIgnoreCase(searchTypeCondition.content_contains()),
+                        hashtagContainsIgnoreCase(searchTypeCondition.hashtag_contains())
                 )
                 .offset(searchCondition.getOffset())
                 .limit(searchCondition.size())
                 .fetch();
     }
 
-    private BooleanExpression categoryEq(String category) {
+    private BooleanExpression categoryEqIgnoreCase(String category) {
         return category != null ? article.category.eq(Category.valueOf(category.toUpperCase())) : null;
     }
 
-    private BooleanExpression titleEq(String title) {
-        return StringUtils.hasText(title) ? article.title.eq(title) : null;
+    private BooleanExpression titleEqIgnoreCase(String title) {
+        return StringUtils.hasText(title) ? article.title.equalsIgnoreCase(title) : null;
     }
 
     private BooleanExpression createdByEq(String createdBy) {
         return StringUtils.hasText(createdBy) ? article.createdBy.eq(createdBy) : null;
     }
 
-    private BooleanExpression hashtagEq(String hashtag) {
-        return StringUtils.hasText(hashtag) ? article.hashtag.eq(hashtag) : null;
+    private BooleanExpression hashtagEqIgnoreCase(String hashtag) {
+        return StringUtils.hasText(hashtag) ? article.hashtag.equalsIgnoreCase(hashtag) : null;
     }
 
     private BooleanExpression titleContainsIgnoreCase(String title) {
@@ -57,6 +58,15 @@ public class QueryDslArticleRepositoryImpl implements QueryDslArticleRepository 
 
     private BooleanExpression contentContainsIgnoreCase(String content) {
         return StringUtils.hasText(content) ? article.content.containsIgnoreCase(content) : null;
+    }
+
+    private BooleanExpression hashtagContainsIgnoreCase(String hashtag) {
+        if (!StringUtils.hasText(hashtag))
+            return null;
+        return article.hashtag.likeIgnoreCase(hashtag + ",%" )
+                .or(article.hashtag.likeIgnoreCase("%," + hashtag + ",%"))
+                .or(article.hashtag.likeIgnoreCase("%," + hashtag))
+                .or(hashtagEqIgnoreCase(hashtag));
     }
 
 }

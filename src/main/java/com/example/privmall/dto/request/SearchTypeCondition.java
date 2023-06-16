@@ -14,7 +14,8 @@ public record SearchTypeCondition(
         String createdAt,
         String createdBy,
         String title_contains,
-        String content_contains
+        String content_contains,
+        String hashtag_contains
 ) {
 
     public SearchTypeCondition(String title,
@@ -24,8 +25,9 @@ public record SearchTypeCondition(
                                String createdAt,
                                String createdBy,
                                String title_contains,
-                               String content_contains) {
-        if (!isValidParameter(title, category, content, hashtag, createdAt, createdBy, title_contains, content_contains))
+                               String content_contains,
+                               String hashtag_contains) {
+        if (!isValidParameter(title, category, content, hashtag, createdAt, createdBy, title_contains, content_contains, hashtag_contains))
             throw new IllegalStateException("invalid category");        // TODO Custom Exception 을 박아주어야 한다.
         this.title = title;
         this.category = category;
@@ -35,6 +37,7 @@ public record SearchTypeCondition(
         this.createdBy = createdBy;
         this.title_contains = title_contains;
         this.content_contains = content_contains;
+        this.hashtag_contains = hashtag_contains;
     }
 
     public boolean isValidParameter(String title,
@@ -44,7 +47,8 @@ public record SearchTypeCondition(
                                     String createdAt,
                                     String createdBy,
                                     String title_contains,
-                                    String content_contains) {
+                                    String content_contains,
+                                    String hashtag_contains) {
         if (category == null)
             return true;
         return Arrays.stream(Category.values())
