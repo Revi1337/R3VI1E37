@@ -2,7 +2,7 @@
   <div>
     <router-view />
   </div>
-  <div>
+  <!-- <div>
     <Particles
       id="tsparticles"
       :particlesInit="particlesInit"
@@ -95,7 +95,7 @@
         retina_detect: true
       }"
     />
-  </div>
+  </div> -->
 </template>
 
 <script setup>
@@ -108,7 +108,7 @@ const particlesInit = async engine => {
   await loadFull(engine);
 };
 const particlesLoaded = async container => {
-  console.log('Particles container loaded', container);
+  // console.log('Particles container loaded', container);
 };
 </script>
 

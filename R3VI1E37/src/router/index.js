@@ -7,7 +7,8 @@ import {
   useRouter
 } from 'vue-router';
 import routes from './routes';
-import { LoadingBar } from 'quasar';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from 'src/stores/auth-store';
 
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
@@ -23,8 +24,13 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE)
   });
 
-  router.beforeEach(() => LoadingBar.start());
-  router.afterEach(() => LoadingBar.stop());
+  const { isAuthenticated } = storeToRefs(useAuthStore());
+
+  router.beforeEach((to, from, next) => {
+    if (to.name === 'CreatePost' && !isAuthenticated.value) {
+      next({ name: 'Index' });
+    } else next();
+  });
 
   return router;
 });

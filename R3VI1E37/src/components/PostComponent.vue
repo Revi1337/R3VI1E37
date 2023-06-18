@@ -1,66 +1,66 @@
 <template>
+  <!-- :class="{ hovered: isHovered }"
+    :style="{ boxShadow: getBoxShadowColor, minHeight: '100px', padding: '15px'}" -->
   <article
-    class="cursor-pointer"
     :class="{ hovered: isHovered }"
-    :style="{ boxShadow: getBoxShadowColor, minHeight: '100px', padding: '15px' }"
+    :style="{
+      boxShadow: shadow ? getBoxShadowColor : 'none',
+      minHeight: '100px',
+      padding: '15px',
+      border: border ? '1px solid' : 'none'
+    }"
     @click="goPostDetails()"
     @mouseenter="slideSwitch()"
     @mouseleave="slideSwitch()"
   >
-    <div class="row q-gutter-lg">
-      <div>
-        <div class="flex flex-center">
-          <q-avatar size="64px">
-            <q-img width="48px" :src="getSvgLink" />
-          </q-avatar>
-        </div>
-        <span class="text-center">
-          <q-badge rounded outline :color="calcColor(props.hashtag[0])" :label="props.hashtag[0]" />
-        </span>
-      </div>
-
-      <div class="col">
-        <div
-          class="row items-center no-wrap"
-          :style="{ height: props.hashtag.slice(1).length > 0 ? '64px' : '100%' }"
-        >
-          <span class="title">{{ title }}</span>
-        </div>
-        <div class="row q-gutter-sm">
-          <span v-for="tag in props.hashtag.slice(1)" :key="tag">
-            <q-badge rounded outline :color="calcColor(tag)" :label="tag" />
+    <slot :svg-link="getSvgLink" :time-to-read="getPredictedTimeToRead" :content="getContent">
+      <div class="row q-gutter-lg">
+        <div>
+          <div class="flex flex-center">
+            <q-avatar size="64px">
+              <q-img width="48px" :src="getSvgLink" />
+            </q-avatar>
+          </div>
+          <span class="text-center">
+            <q-badge rounded outline :color="calcColor(props.hashtag[0])" :label="props.hashtag[0]" />
           </span>
         </div>
-      </div>
 
-      <div class="col-3">
-        <div class="row no-wrap items-center">
-          <span class="text-overline text-red">{{ category.toUpperCase() }}</span>
-          <span class="text-bold">&nbsp;·&nbsp;</span>
-          <span class="text-caption">3 min read</span>
+        <div class="col">
+          <div
+            class="row items-center no-wrap"
+            :style="{ height: props.hashtag.slice(1).length > 0 ? '64px' : '100%' }"
+          >
+            <span class="title">{{ title }}</span>
+          </div>
+          <div class="row q-gutter-sm">
+            <span v-for="tag in props.hashtag.slice(1)" :key="tag">
+              <q-badge rounded outline :color="calcColor(tag)" :label="tag" />
+            </span>
+          </div>
         </div>
-        <div>
-          <span>Created : {{ formattedDateTime }}</span>
-          <span>Written By : {{ createdBy }}</span>
+
+        <div class="col-3">
+          <div class="row no-wrap items-center">
+            <span class="text-overline text-red">{{ category.toUpperCase() }}</span>
+            <span class="text-bold">&nbsp;·&nbsp;</span>
+            <span class="text-caption">{{ getPredictedTimeToRead }}</span>
+          </div>
+          <div>
+            <span>Created : {{ formattedDateTime }}</span>
+            <span>Written By : {{ createdBy }}</span>
+          </div>
         </div>
       </div>
-    </div>
+    </slot>
   </article>
 
   <Transition name="articleSlider">
     <div v-if="swch" class="q-ml-lg">
-      <slot name="slide"> DEFUALT SLIDE </slot>
+      <slot name="slide"></slot>
     </div>
   </Transition>
 </template>
-
-<!-- <span class="text-center">
-  <q-badge rounded outline :color="calcColor(props.hashtag[0])" :label="props.hashtag[0]" />
-</span> -->
-
-<!-- <span v-for="tag in props.hashtag.slice(1)" :key="tag">
-  <q-badge rounded outline :color="calcColor(tag)" :label="tag" />
-</span> -->
 
 <script setup>
 import { useRouter } from 'vue-router';
@@ -101,6 +101,16 @@ const props = defineProps({
   category: {
     type: String,
     required: true
+  },
+  shadow: {
+    type: Boolean,
+    required: false,
+    default: true
+  },
+  border: {
+    type: Boolean,
+    required: false,
+    default: true
   }
 });
 
@@ -122,6 +132,12 @@ const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}`;
 // Manipulize Props Data
 const getContent = computed({
   get: () => props.content.slice(0, 80)
+});
+const getPredictedTimeToRead = computed({
+  get: () => {
+    const predictedTime = Math.floor(props.content.split('\n').length / 40);
+    return predictedTime === 0 ? '1 min to read' : `${predictedTime} min to read`;
+  }
 });
 const getSvgLink = computed({
   get: () => {
@@ -154,7 +170,6 @@ const calcColor = tags => {
   else return 'Unknown';
 };
 
-// 0 0 5px #42b883, 0 0 15px #42b883, 0 0 30px #42b883, 0 0 65px #42b883
 const getBoxShadowColor = computed({
   get: () => {
     if (isHovered.value) {
@@ -227,7 +242,7 @@ span {
 }
 
 article {
-  border: 1px solid $font-color;
+  // border: 1px solid $font-color;
   border-radius: 7px;
   margin: 20px 5px 20px 5px;
   position: relative;
@@ -235,8 +250,13 @@ article {
   flex-wrap: nowrap;
   flex-direction: column;
   justify-content: center;
-}
+  cursor: pointer;
+  transition: all 0.2s ease;
 
+  &:hover {
+    box-shadow: var(--box-shadow-color);
+  }
+}
 .title {
   font-size: 22px;
   font-weight: 900;

@@ -129,7 +129,21 @@ import { marked } from 'marked';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
 import { createPost } from 'src/api/posts';
-import { useRouter } from 'vue-router';
+import { useRouter, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
+import axios from 'axios';
+
+// navigation guard
+
+onBeforeRouteUpdate(() => {
+  console.log('onBeforeRouteUpdate called');
+});
+
+onBeforeRouteLeave(() => {
+  console.log('onBeforeRouteLeave called');
+});
+
+// start setup
+console.log('setup()');
 
 // Select Category & Hashtag
 const stringOptions = ['DEV', 'CTF', 'WRITEUP', 'CS', 'CHEETSHEET'];
@@ -217,7 +231,6 @@ const handlingPaste = event => {
   }
 };
 
-import axios from 'axios';
 const uploadImage = async imageFile => {
   const formData = new FormData();
   formData.append('file', imageFile, imageFile.name);

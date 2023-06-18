@@ -1,61 +1,79 @@
 <template>
-  <div class="q-gutter-y-lg">
-    <div>
-      <p class="text-h5 text-weight-bold">Recent Post</p>
-      <q-card flat dark>
-        <q-card-section horizontal>
-          <q-img
-            class="col-5 q-mr-lg"
-            img-class="rounding"
-            src="https://picsum.photos/500/300"
-            spinner-color="white"
-          />
+  <div>
+    <p class="text-h5 text-weight-bold">Recent Post</p>
+    <PostComponent
+      :id="post.id"
+      :title="post.title"
+      :content="post.content"
+      :hashtag="post.hashtag"
+      :created-at="post.createdAt"
+      :created-by="post.createdBy"
+      :category="post.category"
+      :shadow="false"
+      :border="false"
+      v-slot="{ svgLink, timeToRead, content }"
+    >
+      <div class="row">
+        <div class="col-auto row items-center">
+          <q-avatar size="15rem" square>
+            <q-img :src="svgLink" />
+          </q-avatar>
+        </div>
 
-          <q-card-section class="q-ml-xl q-px-md q-gutter-y-md row items-center">
-            <q-item-label class="col-12">
+        <div class="col row items-center q-ml-xl">
+          <div class="q-ma-lg q-gutter-y-md">
+            <div>
               <q-avatar size="md">
                 <q-img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZHnYW3u0Y2pKCoepqCtCchGi89SaRO4_oZWyg7ial3BmDSAqGElB_LMIqmWEIiTUCpLs&usqp=CAU"
                 />
               </q-avatar>
-              <span class="q-ml-sm">Revi1337</span>
-              <span class="text-bold">&nbsp;·&nbsp;</span>
-              <span class="text-caption">12 min ago</span>
-            </q-item-label>
-
-            <div class="text-h4 text-bold q-mt-sm q-mb-xs col-12">
-              How to Penetrate Active Directory Environment
+              <span class="q-ml-sm">{{ post.createdBy }}</span>
             </div>
 
-            <div class="text-caption col-12">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do asdfa sfd eiusmod tempor
-              incididunt ut labore et dolore magna aliqua.
+            <div class="text-h4 text-bold">{{ post.title }}</div>
+
+            <div class="text-caption">
+              {{ content }}
             </div>
 
-            <q-item-label class="col-12">
-              <span class="text-overline text-red">Pentest</span>
+            <q-item-label class="q-mb-md">
+              <span class="text-overline text-red">{{ post.category.toUpperCase() }}</span>
               <span class="text-bold">&nbsp;·&nbsp;</span>
-              <span class="text-caption">3 min read</span>
+              <span class="text-caption">{{ timeToRead }}</span>
             </q-item-label>
-          </q-card-section>
-        </q-card-section>
-      </q-card>
-    </div>
-
-    <div>
-      <p class="text-h5 text-weight-bold">Announcement</p>
-      <!-- <div>
-        <p v-for="({ id, info }, index) in announcementResponses" :key="index">{{ id }}, {{ info }}</p>
-      </div> -->
-    </div>
+          </div>
+        </div>
+      </div>
+    </PostComponent>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { findPostById } from 'src/api/posts';
+import PostComponent from 'src/components/PostComponent.vue';
+import { ref } from 'vue';
 
-<style lang="scss">
-.rounding {
-  box-sizing: border-box;
-  border-radius: 10px;
-}
-</style>
+// Initialize
+const post = ref({
+  id: '',
+  title: '',
+  content: '',
+  hashtag: '',
+  createdAt: '',
+  createdBy: '',
+  category: ''
+});
+
+const showElement = ref(false);
+
+const findPostByIdRequest = async id => {
+  try {
+    const { data } = await findPostById(id);
+    post.value = { ...data };
+  } catch (error) {
+    console.error(error);
+  }
+};
+findPostByIdRequest(28);
+</script>
