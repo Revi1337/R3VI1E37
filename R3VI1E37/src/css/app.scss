@@ -85,11 +85,11 @@ body {
   font-size: 16px;
   border: 1px solid #88b0c4;
 }
-.mark-down code.hljs::before {
-  content: 'CODE\A \A';
-  white-space: pre;
-  color: $light-green-12;
-}
+// .mark-down code.hljs::before {
+//   content: 'CODE\A \A';
+//   white-space: pre;
+//   color: $light-green-12;
+// }
 #text {
   color: white;
 }

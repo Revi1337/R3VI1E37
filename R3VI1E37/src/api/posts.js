@@ -35,10 +35,6 @@ export function findPostByCategory(category) {
   });
 }
 
-// export function findPostByCondition(params) {
-//   return axios.get(`/api/posts`, { params });
-// }
-
 export function findPostByContainingString(params) {
   return axios.get(`/api/posts`, { params });
 }
