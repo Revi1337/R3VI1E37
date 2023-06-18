@@ -4,10 +4,6 @@ import { storeToRefs } from 'pinia';
 
 const { accessToken } = storeToRefs(useAuthStore());
 
-export function findAllPost() {
-  return axios.get('/api/posts');
-}
-
 export function findById(id) {
   return axios.get(`/api/post/${id}`);
 }
@@ -33,6 +29,10 @@ export function findPostByCategory(category) {
       category: category
     }
   });
+}
+
+export function findAllPost(params) {
+  return axios.get('/api/posts', { params });
 }
 
 export function findPostByContainingString(params) {
