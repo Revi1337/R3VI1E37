@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ width: '350px', height: '350px' }">
+  <div :style="{ width: '320px', height: '320px' }">
     <canvas id="myChart"></canvas>
   </div>
 </template>

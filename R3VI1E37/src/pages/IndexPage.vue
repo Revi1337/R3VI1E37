@@ -38,11 +38,11 @@
               <div class="col-7 row items-center justify-center q-ml-xl">
                 <div class="q-gutter-y-md">
                   <div>
-                    <!-- <q-avatar size="2rem">
+                    <q-avatar size="2rem">
                       <q-img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=t bn:ANd9GcQZHnYW3u0Y2pKCoepqCtCchGi89SaRO4_oZWyg7ial3BmDSAqGElB_LMIqmWEIiTUCpLs&usqp=CAU"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZHnYW3u0Y2pKCoepqCtCchGi89SaRO4_oZWyg7ial3BmDSAqGElB_LMIqmWEIiTUCpLs&usqp=CAU"
                       />
-                    </q-avatar> -->
+                    </q-avatar>
                     <span class="q-ml-sm">{{ post.createdBy }}</span>
                   </div>
 
@@ -66,59 +66,83 @@
     </template>
   </q-carousel>
 
-  <p class="q-mt-lg text-h5 text-weight-bold">Development Log</p>
-  <q-table
-    style="width: 650px"
-    dense
-    hide-no-data
-    dark
-    flat
-    bordered
-    :rows="githubResults"
-    :columns="columns"
-    row-key="name"
-    separator="cell"
-  >
-    <template v-slot:top>
-      <q-avatar font-size="1.8rem" size="1.8rem" icon="fa-brands fa-github" />
-    </template>
-  </q-table>
+  <!-- <p class="col-6 text-h5 text-weight-bold">Development Log</p>
+  <p class="col-6 text-h5 text-weight-bold">TryHackMe Log</p> -->
 
-  <div>
-    <p class="q-mt-lg text-h5 text-weight-bold">TryHackMe Log</p>
-    <div class="row items-end justify-center no-wrap q-gutter-x-md" :style="{ width: '250px' }">
-      <div>
-        <span>&nbsp;</span>
-        <div class="text-center text-h6 text-weight-bold">{{ tryHackMeTotalUsers.totalUsers }}</div>
-        <div class="text-center text-caption">
-          <q-icon name="fa-solid fa-users" />
-          Users
-        </div>
+  <div class="row items-center justify-center" :style="{ height: '400px' }">
+    <div class="col-12 row items-center justify-center no-wrap q-px-lg">
+      <p class="col-6 text-h5 text-weight-bold q-mr-md">DEVLOG</p>
+      <p class="col-6 text-h5 text-weight-bold">TRYHACKME</p>
+    </div>
+    <div class="col-12 row items-center justify-center no-wrap q-pa-lg">
+      <div class="col-6 q-mr-md">
+        <q-table
+          dense
+          hide-no-data
+          dark
+          flat
+          bordered
+          :rows="githubResults"
+          :columns="columns"
+          row-key="name"
+          separator="cell"
+        >
+          <template v-slot:top>
+            <q-avatar font-size="1.8rem" size="1.8rem" icon="fa-brands fa-github" />
+          </template>
+        </q-table>
       </div>
-      <div>
-        <span v-if="!isNaN(tryHackMeRankPercentage)">
-          <span class="text-caption text-light-green-12"> In the top {{ tryHackMeRankPercentage }}%</span>
-        </span>
-        <div class="text-center text-h6 text-weight-bold">{{ tryHackMeUserRank.userRank }}</div>
-        <div class="text-center text-caption">
-          <q-icon name="fa-solid fa-trophy" />
-          Rank
+
+      <div class="col-6">
+        <div class="row no-wrap">
+          <div class="col-auto" :style="{ width: '320px', height: '320px' }">
+            <ChartComponent
+              v-if="loaded"
+              chart-type="radar"
+              :chart-data="chartData"
+              :chart-options="config"
+            />
+            <!-- <Radar v-if="loaded" :data="chartData" :options="config" /> -->
+          </div>
+
+          <div class="column justify-center items-center">
+            <div class="q-mb-md">
+              <div class="row items-end justify-center no-wrap" :style="{ width: '210px', height: '70px' }">
+                <div class="q-mr-md">
+                  <span>&nbsp;</span>
+                  <div class="text-center text-h6 text-weight-bold">{{ tryHackMeTotalUsers.totalUsers }}</div>
+                  <div class="text-center text-caption">
+                    <q-icon name="fa-solid fa-users" />
+                    Users
+                  </div>
+                </div>
+                <div>
+                  <span v-if="!isNaN(tryHackMeRankPercentage)">
+                    <span class="text-caption text-light-green-12">
+                      In the top {{ tryHackMeRankPercentage }}%</span
+                    >
+                  </span>
+                  <div class="text-center text-h6 text-weight-bold">{{ tryHackMeUserRank.userRank }}</div>
+                  <div class="text-center text-caption">
+                    <q-icon name="fa-solid fa-trophy" />
+                    Rank
+                  </div>
+                </div>
+              </div>
+            </div>
+            <TryHackMeBadgeComponent :user-rank="tryHackMeUserRank.userRank" class="q-mb-lg" />
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div>
-    <ChartComponent v-if="loaded" chart-type="radar" :chart-data="chartData" :chart-options="config" />
-  </div>
-
-  <!-- <Radar v-if="loaded" :data="chartData" :options="config" /> -->
 </template>
 
 <script setup>
 import { findAllPost } from 'src/api/posts';
 import PostComponent from 'src/components/PostComponent.vue';
 import ChartComponent from 'src/components/ChartComponent.vue';
+import TryHackMeBadgeComponent from 'src/components/TryHackMeBadgeComponent.vue';
 import { onMounted, computed, ref } from 'vue';
 import {
   fetchGithubCommits,
@@ -190,6 +214,13 @@ const tryHackMeRankPercentage = computed(() => {
   return Math.ceil((tryHackMeUserRank.value.userRank / tryHackMeTotalUsers.value.totalUsers) * 100);
 });
 
+// filtering maximum value
+const filteringMaximumValue = iterable => {
+  const emptyArray = [];
+  iterable.forEach(value => (value >= 100 ? emptyArray.push(100) : emptyArray.push(value)));
+  return emptyArray;
+};
+
 // fetch TryHackMe SkillSet & ChartJS
 const tryHackMeSkillSet = ref({
   fundamentals: '',
@@ -199,6 +230,7 @@ const tryHackMeSkillSet = ref({
   web: '',
   windows: ''
 });
+
 const fetchTryHackMeSkillSetRequest = async () => {
   loaded.value = false;
   const { data } = await fetchTryHackMeSkillSet();
@@ -206,15 +238,15 @@ const fetchTryHackMeSkillSetRequest = async () => {
     labels: Object.keys(tryHackMeSkillSet.value),
     datasets: [
       {
-        label: 'Experiment Score',
-        data: [
+        label: 'Skill Score',
+        data: filteringMaximumValue([
           data.skills.fundamentals.score,
           data.skills.linux.score,
           data.skills.network.score,
           data.skills.privesc.score,
           data.skills.web.score,
           data.skills.windows.score
-        ],
+        ]),
         fill: true,
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor: 'rgb(54, 162, 235)',
@@ -242,10 +274,10 @@ const config = {
     r: {
       beginAtZero: true,
       min: 0,
-      max: 150,
+      max: 100,
       backgroundColor: 'rgba(0, 0, 0, 0.8)',
       ticks: {
-        stepSize: 10,
+        stepSize: 20,
         callback: (value, tick, values) => '',
         backdropPadding: 0
       }
