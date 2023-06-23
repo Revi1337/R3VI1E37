@@ -37,9 +37,6 @@ import 'highlight.js/styles/atom-one-dark.css';
 import { findPostById } from 'src/api/posts';
 import { onUpdated, watchEffect, computed, ref, onMounted } from 'vue';
 
-console.log('PostDetails setup()');
-onMounted(() => console.log('PostDetails onMounted()'));
-
 // Initialize
 const props = defineProps({
   id: String

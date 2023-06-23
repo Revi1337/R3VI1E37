@@ -24,9 +24,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 
-console.log('HashTagsComponent setup()');
 onMounted(() => {
-  console.log('HashTagsCompoent onMounted()');
   console.log(props.value);
 });
 

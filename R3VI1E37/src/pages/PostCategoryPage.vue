@@ -42,9 +42,6 @@ import PostComponent from 'src/components/PostComponent.vue';
 import HashTagsComponent from 'src/components/HashTagsComponent.vue';
 import SummaryComponent from 'src/components/SummaryComponent.vue';
 
-console.log('DevPage Setup()');
-onMounted(() => console.log('DevPage onMounted()'));
-
 // Initialize
 const props = defineProps({
   category: {

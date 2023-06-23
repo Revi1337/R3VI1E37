@@ -19,7 +19,6 @@
 <script setup>
 import { onMounted, computed, ref } from 'vue';
 
-console.log('SummaryComponent Setup()');
 const props = defineProps({
   content: {
     type: [String, Object]

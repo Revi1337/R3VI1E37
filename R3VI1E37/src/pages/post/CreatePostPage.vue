@@ -142,9 +142,6 @@ onBeforeRouteLeave(() => {
   console.log('onBeforeRouteLeave called');
 });
 
-// start setup
-console.log('setup()');
-
 // Select Category & Hashtag
 const stringOptions = ['DEV', 'CTF', 'WRITEUP', 'CS', 'CHEETSHEET'];
 const options = ref(stringOptions);
