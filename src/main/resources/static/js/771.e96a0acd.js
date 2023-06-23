@@ -1,1 +1,0 @@
-"use strict";(globalThis["webpackChunkr3vi1e37"]=globalThis["webpackChunkr3vi1e37"]||[]).push([[771],{9771:(e,n,r)=>{r.r(n),r.d(n,{default:()=>s});var i=r(9835);function t(e,n){return(0,i.wg)(),(0,i.iD)("div",null,"WebContent")}var u=r(1639);const a={},l=(0,u.Z)(a,[["render",t]]),s=l}}]);

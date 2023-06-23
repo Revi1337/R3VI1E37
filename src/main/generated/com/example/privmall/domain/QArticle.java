@@ -22,11 +22,21 @@ public class QArticle extends EntityPathBase<Article> {
 
     public static final QArticle article = new QArticle("article");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final ListPath<Attachment, QAttachment> attachments = this.<Attachment, QAttachment>createList("attachments", Attachment.class, QAttachment.class, PathInits.DIRECT2);
+
+    public final EnumPath<com.example.privmall.domain.enumerate.Category> category = createEnum("category", com.example.privmall.domain.enumerate.Category.class);
 
     public final ListPath<Comment, QComment> comments = this.<Comment, QComment>createList("comments", Comment.class, QComment.class, PathInits.DIRECT2);
 
     public final StringPath content = createString("content");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
 
     public final StringPath hashtag = createString("hashtag");
 
@@ -54,7 +64,7 @@ public class QArticle extends EntityPathBase<Article> {
 
     public QArticle(Class<? extends Article> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.userAccount = inits.isInitialized("userAccount") ? new QUserAccount(forProperty("userAccount"), inits.get("userAccount")) : null;
+        this.userAccount = inits.isInitialized("userAccount") ? new QUserAccount(forProperty("userAccount")) : null;
     }
 
 }

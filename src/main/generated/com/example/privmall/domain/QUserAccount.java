@@ -18,15 +18,11 @@ public class QUserAccount extends EntityPathBase<UserAccount> {
 
     private static final long serialVersionUID = 1371874226L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QUserAccount userAccount = new QUserAccount("userAccount");
 
     public final ListPath<Article, QArticle> articles = this.<Article, QArticle>createList("articles", Article.class, QArticle.class, PathInits.DIRECT2);
 
     public final StringPath email = createString("email");
-
-    public final EnumPath<com.example.privmall.domain.enumerate.Gender> gender = createEnum("gender", com.example.privmall.domain.enumerate.Gender.class);
 
     public final EnumPath<com.example.privmall.domain.enumerate.Host> host = createEnum("host", com.example.privmall.domain.enumerate.Host.class);
 
@@ -36,31 +32,18 @@ public class QUserAccount extends EntityPathBase<UserAccount> {
 
     public final StringPath password = createString("password");
 
-    public final StringPath phone = createString("phone");
-
     public final StringPath roles = createString("roles");
 
-    public final QToken token;
-
     public QUserAccount(String variable) {
-        this(UserAccount.class, forVariable(variable), INITS);
+        super(UserAccount.class, forVariable(variable));
     }
 
     public QUserAccount(Path<? extends UserAccount> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QUserAccount(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QUserAccount(PathMetadata metadata, PathInits inits) {
-        this(UserAccount.class, metadata, inits);
-    }
-
-    public QUserAccount(Class<? extends UserAccount> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.token = inits.isInitialized("token") ? new QToken(forProperty("token"), inits.get("token")) : null;
+        super(UserAccount.class, metadata);
     }
 
 }
