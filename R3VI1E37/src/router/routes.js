@@ -18,37 +18,44 @@ const routes = [
         name: 'Post',
         children: [
           {
+            path: '',
+            name: 'PostDefault',
+            beforeEnter: () => {
+              return { name: 'CategoryPost', params: { category: 'dev' } };
+            }
+          },
+          {
             path: 'create',
             name: 'CreatePost',
-            component: () => import('pages/post/CreatePostPage.vue'),
             meta: {
-              layoutPadding: 20
-            }
+              layoutPadding: 20,
+              authorization: ['ADMIN']
+            },
+            component: () => import('pages/post/CreatePostPage.vue')
           },
           {
             path: ':category',
             name: 'CategoryPost',
-            component: () => import('pages/PostCategoryPage.vue'),
             props: true,
             beforeEnter: ({ params }) => {
               if (
-                Object.keys(params).length === 0 ||
+                params.length === 0 ||
                 !['dev', 'ctf', 'writeup', 'cs', 'cheetsheet'].includes(params.category)
               )
                 return { name: 'CategoryPost', params: { category: 'dev' } };
-              console.log(params);
-            }
+            },
+            component: () => import('pages/PostCategoryPage.vue')
           }
         ]
       },
       {
         path: 'posts/:id',
         name: 'PostDetails',
-        component: () => import('pages/post/PostDetails.vue'),
         props: true,
         meta: {
           layoutPadding: 470
-        }
+        },
+        component: () => import('pages/post/PostDetails.vue')
       }
     ]
   },
@@ -77,6 +84,9 @@ const routes = [
   {
     path: '/demo/particle',
     name: 'Particle',
+    meta: {
+      authorization: []
+    },
     component: () => import('pages/IntroPage.vue')
   },
   {

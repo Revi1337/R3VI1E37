@@ -24,13 +24,23 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE)
   });
 
-  const { isAuthenticated } = storeToRefs(useAuthStore());
+  const { isAuthenticated, roles } = storeToRefs(useAuthStore());
 
   router.beforeEach((to, from, next) => {
-    if (to.name === 'CreatePost' && !isAuthenticated.value) {
-      next({ name: 'Index' });
-    } else next();
-  });
+    const authenticated = isAuthenticated.value;
+    const userRoles = roles.value;
+    const { authorization } = to.meta;
 
+    console.log(authorization);
+    console.log(userRoles);
+
+    if (authorization) {
+      if (!authenticated) return next({ name: 'Login' });
+      if (authorization.length && userRoles.filter(role => authorization.includes(role)).length === 0)
+        return next({ name: 'Index' });
+    }
+
+    next();
+  });
   return router;
 });

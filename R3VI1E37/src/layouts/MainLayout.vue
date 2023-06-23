@@ -165,7 +165,7 @@ const tab = ref('');
 const router = useRouter();
 
 // use authStore
-const { accessToken, nickname, isAuthenticated } = storeToRefs(useAuthStore());
+const { accessToken, nickname, isAuthenticated, roles } = storeToRefs(useAuthStore());
 
 // goHome
 const goHome = () => {
@@ -176,9 +176,10 @@ const goHome = () => {
 const logoutStatus = ref(false);
 const logoutStatusContent = ref('');
 const setNegativeAuthInfo = () => {
+  isAuthenticated.value = false;
   nickname.value = null;
   accessToken.value = null;
-  isAuthenticated.value = false;
+  roles.value = null;
 };
 const clickLogout = () => {
   console.log('clickLogout()');

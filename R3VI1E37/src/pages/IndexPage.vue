@@ -77,6 +77,7 @@
     <div class="col-12 row items-center justify-center no-wrap q-pa-lg">
       <div class="col-6 q-mr-md">
         <q-table
+          class="text-table"
           dense
           hide-no-data
           dark
@@ -232,32 +233,39 @@ const tryHackMeSkillSet = ref({
 });
 
 const fetchTryHackMeSkillSetRequest = async () => {
-  loaded.value = false;
-  const { data } = await fetchTryHackMeSkillSet();
-  chartData.value = {
-    labels: Object.keys(tryHackMeSkillSet.value),
-    datasets: [
-      {
-        label: 'Skill Score',
-        data: filteringMaximumValue([
-          data.skills.fundamentals.score,
-          data.skills.linux.score,
-          data.skills.network.score,
-          data.skills.privesc.score,
-          data.skills.web.score,
-          data.skills.windows.score
-        ]),
-        fill: true,
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgb(54, 162, 235)',
-        pointBackgroundColor: 'rgb(54, 162, 235)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgb(54, 162, 235)'
-      }
-    ]
-  };
-  loaded.value = true;
+  let preData = null;
+  try {
+    loaded.value = false;
+    const { data } = await fetchTryHackMeSkillSet();
+    preData = filteringMaximumValue([
+      data.skills.fundamentals.score,
+      data.skills.linux.score,
+      data.skills.network.score,
+      data.skills.privesc.score,
+      data.skills.web.score,
+      data.skills.windows.score
+    ]);
+  } catch {
+    preData = [100, 85, 81, 70, 93, 38];
+  } finally {
+    chartData.value = {
+      labels: Object.keys(tryHackMeSkillSet.value),
+      datasets: [
+        {
+          label: 'Skill Score',
+          data: preData,
+          fill: true,
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          borderColor: 'rgb(54, 162, 235)',
+          pointBackgroundColor: 'rgb(54, 162, 235)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgb(54, 162, 235)'
+        }
+      ]
+    };
+    loaded.value = true;
+  }
 };
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 ChartJS.defaults.color = '#BADA55';
@@ -330,4 +338,36 @@ onMounted(async () => {
 .carousel {
   color: $font-color;
 }
+.text-table {
+  color: $font-color !important;
+}
 </style>
+<!-- // const fetchTryHackMeSkillSetRequest = async () => {
+  //   loaded.value = false;
+  //   // const { data } = await fetchTryHackMeSkillSet();
+  //   chartData.value = {
+  //     labels: Object.keys(tryHackMeSkillSet.value),
+  //     datasets: [
+  //       {
+  //         label: 'Skill Score',
+  //         // data: filteringMaximumValue([
+  //         //   data.skills.fundamentals.score,
+  //         //   data.skills.linux.score,
+  //         //   data.skills.network.score,
+  //         //   data.skills.privesc.score,
+  //         //   data.skills.web.score,
+  //         //   data.skills.windows.score
+  //         // ]),
+  //         data: [100, 85, 81, 70, 93, 38],
+  //         fill: true,
+  //         backgroundColor: 'rgba(54, 162, 235, 0.2)',
+  //         borderColor: 'rgb(54, 162, 235)',
+  //         pointBackgroundColor: 'rgb(54, 162, 235)',
+  //         pointBorderColor: '#fff',
+  //         pointHoverBackgroundColor: '#fff',
+  //         pointHoverBorderColor: 'rgb(54, 162, 235)'
+  //       }
+  //     ]
+  //   };
+  //   loaded.value = true;
+  // }; -->
