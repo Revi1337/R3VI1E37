@@ -4,6 +4,7 @@ import com.example.privmall.domain.UserAccount;
 import com.example.privmall.dto.UserAccountDto;
 import com.example.privmall.dto.request.principal.UserAccountPrincipal;
 import com.example.privmall.dto.request.LoginRequest;
+import com.example.privmall.dto.response.LoginResponse;
 import com.example.privmall.dto.response.UserAccountResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -56,9 +57,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         System.out.println("CustomAuthenticationFilter.successfulAuthentication");
         UserAccountPrincipal principal = (UserAccountPrincipal) authResult.getPrincipal();
         System.out.println(principal.nickname());
-        String userResponse = objectMapper.writeValueAsString(
-                UserAccountResponse.from(principal.toDto())
-        );
+        String userResponse = objectMapper.writeValueAsString(LoginResponse.from(principal));
         response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwtUtil.generate(principal.getUsername()));
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         PrintWriter writer = response.getWriter();
