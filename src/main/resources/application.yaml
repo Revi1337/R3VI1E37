@@ -6,6 +6,7 @@ spring:
     url: jdbc:h2:tcp://localhost/~/privmall
     username: sa
     password:
+    driver-class-name: org.h2.Driver
 
   jpa:
     hibernate:
