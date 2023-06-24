@@ -28,7 +28,7 @@ public record SearchTypeCondition(
                                String content_contains,
                                String hashtag_contains) {
         if (!isValidParameter(title, category, content, hashtag, createdAt, createdBy, title_contains, content_contains, hashtag_contains))
-            throw new IllegalStateException("invalid category");        // TODO Custom Exception 을 박아주어야 한다.
+            throw new IllegalStateException("malicious parameter detected");        // TODO Custom Exception 을 박아주어야 한다.
         this.title = title;
         this.category = category;
         this.content = content;

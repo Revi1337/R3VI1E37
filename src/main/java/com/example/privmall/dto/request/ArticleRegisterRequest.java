@@ -3,6 +3,7 @@ package com.example.privmall.dto.request;
 import com.example.privmall.domain.enumerate.Category;
 import com.example.privmall.dto.ArticleDto;
 import com.example.privmall.dto.UserAccountDto;
+import com.example.privmall.exception.NonExistsCategoryException;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Arrays;
@@ -24,7 +25,7 @@ public record ArticleRegisterRequest(
                 Arrays.stream(Category.values())
                         .filter(preCategory -> preCategory.getDescription().equalsIgnoreCase(category))
                         .findFirst()
-                        .orElseThrow(IllegalArgumentException::new),    // TODO 일치하지 않는 카테고리가 없다는 Exception 을 만들어서 던져주어야 한다.
+                        .orElseThrow(() -> new NonExistsCategoryException("specified category non exists")),
                 hashTag,
                 null,
                 null
